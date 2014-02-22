@@ -10,25 +10,12 @@ var RedmineInstance = function (redmineServer){
         this.list(onReadyCallback, 'projects', parameters);
     };
     
-    this.list = function (onReadyCallback, resource, parameters){
-        var defaultParameters = {
-            limit: 100,
-            offset: 0
-        };
-        
-        if(typeof(parameters) !== 'undefined'){
-            defaultParameters = $.extend(defaultParameters, parameters);
-        }
-        
-        var options = {
-            url: this.getServerUrl() + resource + '.json',
-            data: defaultParameters,
-            success: function (data){
-                onReadyCallback.bind(this)(data);
-            }
-        };
-        
-        this.request(options);
+    this.getOpenIssuesAssignedToMe = function (onReadyCallback){
+        this.list(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open'});
+    };
+    
+    this.getAllOpenIssuesAssignedToMe = function (onReadyCallback){
+        this.listAll(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open'});
     };
     
     this.listAll = function (onReadyCallback, resource, parameters){
@@ -50,6 +37,27 @@ var RedmineInstance = function (redmineServer){
         };
         
         this.list(success, resource, parameters);
+    };
+    
+    this.list = function (onReadyCallback, resource, parameters){
+        var defaultParameters = {
+            limit: 100,
+            offset: 0
+        };
+        
+        if(typeof(parameters) !== 'undefined'){
+            defaultParameters = $.extend(defaultParameters, parameters);
+        }
+        
+        var options = {
+            url: this.getServerUrl() + resource + '.json',
+            data: defaultParameters,
+            success: function (data){
+                onReadyCallback.bind(this)(data);
+            }
+        };
+        
+        this.request(options);
     };
     
     this.request = function (options){

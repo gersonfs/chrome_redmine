@@ -3,11 +3,11 @@ $(function (){
     var servers = cr.getRedmineServers();
     for(i in servers){
         var ri = new RedmineInstance(servers[i]);
-        ri.getAllProjects(function (projects){
-            for(i in projects){
+        ri.getAllOpenIssuesAssignedToMe(function (issues){
+            for(i in issues){
                 i = i * 1;
-                var project = projects[i];
-                $('body').append((i+1) + ' - ' + project.name + '<br />');
+                var issue = issues[i];
+                $('body').append((i+1) + ' - ' + issue.subject + '<br />');
             }
         });
     }

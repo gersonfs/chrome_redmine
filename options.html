@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Chrome Redmine integration options page</title>
+        <style>
+            body {
+                min-width: 357px;
+                overflow-x: hidden;
+            }
+        </style>
+        <script src="js/jquery-2.1.0.min.js"></script>
+        <script src="js/chrome_redmine.js"></script>
+        <script src="js/config.js"></script>
+    </head>
+    <body>
+        <h1>Redmine Servers</h1>
+        <form method="post" action="">
+            <label for="ServerName">Server Name</label>
+            <input type="text" name="name" id="ServerName" required="required" />
+            <br />
+            
+            <label for="ServerUrl">Server URL</label>
+            <input type="url" name="url" id="ServerUrl" required="required" />
+            <br />
+            
+            <label for="ServerUserKey">User API Key</label>
+            <input type="text" name="key" id="ServerUserKey" required="required" />
+            <br />
+
+            <input type="button" value="Add Redmine Server" id="AddServer" />
+        </form>
+
+        <table id="ListServers">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>URL</td>
+                    <td>User API Key</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </body>
+</html>
+

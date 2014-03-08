@@ -24,10 +24,10 @@ function renderServers(){
     for(i in servers){
         var server = servers[i];
         var html = '<tr>';
-            html += '<td>'+ server.id +'</td>';
-            html += '<td>'+ server.name +'</td>';
-            html += '<td>'+ server.url +'</td>';
-            html += '<td>'+ server.userKey +'</td>';
+            html += '<td>'+ server.getId() +'</td>';
+            html += '<td>'+ server.getName() +'</td>';
+            html += '<td>'+ server.getUrl() +'</td>';
+            html += '<td>'+ server.getUserKey() +'</td>';
             html += '<td><a href="#" data-index="'+ i +'">Delete</a></td>';
         html += '</tr>';
         $('#ListServers tbody').append(html);

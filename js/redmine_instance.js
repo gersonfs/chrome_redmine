@@ -1,6 +1,5 @@
 var RedmineInstance = function (redmineServer){
     this.redmineServer = redmineServer;
-    var tmp;
     
     this.getAllProjects = function (onReadyCallback, parameters){
         this.listAll(onReadyCallback, 'projects', parameters);
@@ -73,16 +72,20 @@ var RedmineInstance = function (redmineServer){
         $.ajax($.extend(defaultOptions, options));
     };
     
+    this.getRedmineServer = function (){
+        return this.redmineServer;
+    };
+    
     this.getServerId = function (){
-        return this.redmineServer.id;
+        return this.redmineServer.getId();
     };
     
     this.getServerUrl = function (){
-        return this.redmineServer.url;
+        return this.redmineServer.getUrl();
     };
     
     this.getUserApiKey = function (){
-        return this.redmineServer.userKey;
+        return this.redmineServer.getUserKey();
     };
     
 };

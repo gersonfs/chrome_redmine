@@ -1,7 +1,14 @@
 var ChromeRedmine = function (){
     
     this.loadRedmineServers = function (){
-        return JSON.parse(localStorage['RedmineServers'] || "[]");
+        var arrayServers = JSON.parse(localStorage['RedmineServers'] || "[]");
+        var servers = [];
+        for(i in arrayServers){
+            var tmp = arrayServers[i];
+            var server = new RedmineServer(tmp.id, tmp.name, tmp.url, tmp.userKey);
+            servers.push(server);
+        }
+        return servers;
     };
     
     this.getRedmineServers = function (){
@@ -9,24 +16,30 @@ var ChromeRedmine = function (){
     };
 
     this.addRedmineServer = function (name, url, userKey){
+        
+        var server = new RedmineServer({
+            'id': (new Date()).getTime(), 
+            'name': name, 
+            'url': url, 
+            'userKey': userKey
+        });
+
         var servers = this.loadRedmineServers();
-        servers.push({'id': (new Date()).getTime(), 'name': name, 'url': url, 'userKey': userKey});
+        servers.push(server);
         this.saveServers(servers);
     };
 
     this.saveServers = function (servers){
-        localStorage['RedmineServers'] = JSON.stringify(servers);
+        var serversArray = [];
+        for(var i in servers){
+            serversArray.push(servers[i].toJSON());
+        }
+        localStorage['RedmineServers'] = JSON.stringify(serversArray);
     };
 
     this.deleteServer = function (index){
         var servers = this.loadRedmineServers();
-        var servers2 = [];
-        for(i in servers){
-            if(i == index){
-                continue;
-            }
-            servers2.push(servers[i]);
-        }
-        this.saveServers(servers2);
+        servers.splice(index, 1);
+        this.saveServers(servers);
     };
 };

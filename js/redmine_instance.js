@@ -72,6 +72,20 @@ var RedmineInstance = function (redmineServer){
         $.ajax($.extend(defaultOptions, options));
     };
     
+    this.getProjectMemberships = function (project_id, onReadyCallback){
+        var resource = 'projects/'+ project_id +'/memberships';
+        this.list(onReadyCallback, resource);
+    };
+    
+    this.getIssue = function (issue_id, onReadyCallback){
+        this.request({
+            url: this.getServerUrl() + 'issues/' + issue_id + '.json',
+            success: function (data){
+                onReadyCallback.bind(this)(data);
+            }
+        });
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

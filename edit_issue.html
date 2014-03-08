@@ -7,6 +7,7 @@
         <script src="js/jquery-2.1.0.min.js"></script>
         <script src="js/util.js"></script>
         <script src="js/redmine_server.js"></script>
+        <script src="js/redmine_instance.js"></script>
         <script src="js/redmine_issue.js"></script>
         <script src="js/chrome_redmine.js"></script>
         <script src="js/edit_issue.js"></script>
@@ -15,16 +16,16 @@
         <h1>Edit Issue</h1>
         
         <div id="Issue">
-            <input name="issue[project_id]" />
-            <input name="issue[tracker_id]" />
-            <input name="issue[status_id]" />
-            <input name="issue[priority_id]" />
-            <input name="issue[subject]" />
-            <input name="issue[description]" />
-            <input name="issue[category_id]" />
-            <input name="issue[assigned_to_id]" />
-            <input name="issue[start_date]" />
-            <input name="issue[estimated_hours]" />
+            <input type="hidden" name="issue[project_id]" id="IssueProjectId" />
+            <select name="issue[tracker_id]" id="IssueTrackerId"></select>
+            <select name="issue[status_id]" id="IssueStatusId"></select>
+            <select name="issue[priority_id]" id="IssuePriorityId"></select>
+            <input name="issue[subject]" id="IssueSubject" />
+            <textarea name="issue[description]" id="IssueDescription"></textarea>
+            <select name="issue[category_id]" id="IssueCategoryId"></select>
+            <select name="issue[assigned_to_id]" id="IssueAssignedToId"></select>
+            <input name="issue[start_date]" id="IssueStartDate" />
+            <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
         </div>
     </body>
 </html>

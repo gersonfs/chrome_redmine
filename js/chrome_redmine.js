@@ -14,6 +14,16 @@ var ChromeRedmine = function (){
     this.getRedmineServers = function (){
         return this.loadRedmineServers();
     };
+    
+    this.getRedmineServer = function (id){
+        var servers = this.getRedmineServers();
+        for(var i in servers){
+            if(servers[i].getId() == id){
+                return servers[i];
+            }
+        }
+        return null;
+    };
 
     this.addRedmineServer = function (name, url, userKey){
         

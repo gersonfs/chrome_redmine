@@ -12,3 +12,9 @@ body {
     min-width: 357px;
     overflow-x: hidden;
 }
+
+
+#IssueDescription{
+    height: 120px;
+    max-height: 250px;
+}

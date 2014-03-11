@@ -77,6 +77,22 @@ var RedmineInstance = function (redmineServer){
         this.list(onReadyCallback, resource);
     };
     
+    this.getTrackers = function (onReadyCallback){
+        this.list(onReadyCallback, 'trackers');
+    };
+    
+    this.getIssueStatuses = function (onReadyCallback){
+        this.list(onReadyCallback, 'issue_statuses');
+    };
+    
+    this.getIssuePriorities = function (onReadyCallback){
+        this.list(onReadyCallback, 'enumerations/issue_priorities');
+    };
+    
+    this.getProjectIssueCategories = function (project_id, onReadyCallback){
+        this.list(onReadyCallback, 'projects/'+ project_id +'/issue_categories');
+    };
+    
     this.getIssue = function (issue_id, onReadyCallback){
         this.request({
             url: this.getServerUrl() + 'issues/' + issue_id + '.json',

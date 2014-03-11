@@ -64,6 +64,10 @@ function issueClicked(){
     $('#IssueDescription').val(currentIssue.description);
     $('#IssueStartDate').val(currentIssue.start_date);
     $('#IssueEstimatedHours').val(currentIssue.estimated_hours);
+    $('#IssueAssignedToId').html('<option value="'+ currentIssue.assigned_to.id +'">'+ currentIssue.assigned_to.name +'</option>');
+    $('#IssueTrackerId').html('<option value="'+ currentIssue.tracker.id +'">'+ currentIssue.tracker.name +'</option>');
+    $('#IssueStatusId').html('<option value="'+ currentIssue.status.id +'">'+ currentIssue.status.name +'</option>');
+    $('#IssuePriorityId').html('<option value="'+ currentIssue.priority.id +'">'+ currentIssue.priority.name +'</option>');
     $('#Issue').show();
     $('#Issues').hide();
     

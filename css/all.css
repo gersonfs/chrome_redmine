@@ -4,8 +4,15 @@
 }
 
 .input label{
-    display: block;
+    display: table;
+    width: auto;
+    padding-right: 18px;
     font-weight: bold;
+}
+
+.input label.loading{
+    background: transparent right url(../img/loading.gif) no-repeat;
+    background-size: 15px 15px;
 }
 
 .input{

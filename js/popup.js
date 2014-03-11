@@ -86,6 +86,7 @@ function issueClicked(){
         }
         $('#IssueAssignedToId').html(html);
         $('#IssueAssignedToId').val(currentIssue.assigned_to.id);
+        $('label[for="IssueAssignedToId"]').removeClass('loading');
     });
     
     currentInstance.getTrackers(function (data){
@@ -96,6 +97,7 @@ function issueClicked(){
         }
         $('#IssueTrackerId').html(html);
         $('#IssueTrackerId').val(currentIssue.tracker.id);
+        $('label[for="IssueTrackerId"]').removeClass('loading');
     });
     
     currentInstance.getIssueStatuses(function (data){
@@ -106,6 +108,7 @@ function issueClicked(){
         }
         $('#IssueStatusId').html(html);
         $('#IssueStatusId').val(currentIssue.status.id);
+        $('label[for="IssueStatusId"]').removeClass('loading');
     });
     
     currentInstance.getIssuePriorities(function (data){
@@ -116,6 +119,7 @@ function issueClicked(){
         }
         $('#IssuePriorityId').html(html);
         $('#IssuePriorityId').val(currentIssue.priority.id);
+        $('label[for="IssuePriorityId"]').removeClass('loading');
     });
 }
 

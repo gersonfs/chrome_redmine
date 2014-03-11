@@ -102,6 +102,21 @@ var RedmineInstance = function (redmineServer){
         });
     };
     
+    this.updateIssue = function (issue_id, data, onReadyCallback){
+        this.request({
+            url: this.getServerUrl() + 'issues/' + issue_id + '.json',
+            type: 'PUT',
+            data: data,
+            dataType: 'html',
+            success: function (){
+                onReadyCallback.bind(this)();
+            },
+            error: function (a, b, c){
+                alert("Erro ao salvar o ticket");
+            }
+        });
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

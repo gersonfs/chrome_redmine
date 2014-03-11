@@ -14,7 +14,7 @@
   </head>
   <body>
       <div id="Issues"></div>
-      <div id="Issue" style="display: none;">
+      <form id="Issue" style="display: none;">
             <input type="hidden" name="issue[project_id]" id="IssueProjectId" />
             
             <div class="input select issue_tracker_id float">
@@ -57,9 +57,14 @@
                 <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
             </div>
             
+            <div class="input select issue_notes">
+                <label for="IssueNotes">Notes</label>
+                <textarea style="width: 100%;" name="issue[notes]" id="IssueNotes"></textarea>
+            </div>
+            
             <input type="button" name="" value="Save" id="SaveIssue" />
             <input type="button" name="" value="Back" id="BackIssue" />
-        </div>
+        </form>
   </body>
 </html>
 

@@ -1,10 +1,30 @@
 var issues = [];
 var instances = [];
+var currentIssue;
+var currentInstance;
 
 $(function (){
+    loadIssues();
+    
+    $('#BackIssue').click(function (){
+        $('#Issue').hide();
+        $('#Issues').show();
+    });
+    
+    $('#SaveIssue').click(function (){
+        currentInstance.updateIssue(currentIssue.id, $('#Issue').serialize(), function (){
+            loadIssues();
+            $('#Issue').hide();
+            $('#Issues').show();
+        });
+    });
+});
+
+function loadIssues(){
     var cr = new ChromeRedmine();
     var servers = cr.getRedmineServers();
     var totalIssues = 0;
+    $('#Issues').html('');
     for(i in servers){
         var ri = new RedmineInstance(servers[i]);
         ri.getAllOpenIssuesAssignedToMe(function (serverIssues){
@@ -28,32 +48,27 @@ $(function (){
     if(servers.length === 0){
         $('body').append('<div class="alert error">Não há servidores redmine configurados</div>');
     }
-    
-    $('#BackIssue').click(function (){
-        $('#Issue').hide();
-        $('#Issues').show();
-    });
-});
+}
 
 function issueClicked(){
     var serverId = $(this).data('server-id') * 1;
     var issueId = $(this).data('issue-id') * 1;
     
     var cr = new ChromeRedmine();
-    var instance = new RedmineInstance(cr.getRedmineServer(serverId));
+    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
     
-    issue = getIssue(serverId, issueId);
+    currentIssue = getIssue(serverId, issueId);
     
-    $('#IssueProjectId').val(issue.project.id);
-    $('#IssueSubject').val(issue.subject);
-    $('#IssueDescription').val(issue.description);
-    $('#IssueStartDate').val(issue.start_date);
-    $('#IssueEstimatedHours').val(issue.estimated_hours);
+    $('#IssueProjectId').val(currentIssue.project.id);
+    $('#IssueSubject').val(currentIssue.subject);
+    $('#IssueDescription').val(currentIssue.description);
+    $('#IssueStartDate').val(currentIssue.start_date);
+    $('#IssueEstimatedHours').val(currentIssue.estimated_hours);
     $('#Issue').show();
     $('#Issues').hide();
     
-    instance.getProjectMemberships(issue.project.id, function (data){
-        var html = '';
+    currentInstance.getProjectMemberships(currentIssue.project.id, function (data){
+        var html = '<option value=""></option>';
         for(var i in data.memberships){
             var member = data.memberships[i];
             
@@ -66,37 +81,37 @@ function issueClicked(){
             }
         }
         $('#IssueAssignedToId').html(html);
-        $('#IssueAssignedToId').val(issue.assigned_to.id);
+        $('#IssueAssignedToId').val(currentIssue.assigned_to.id);
     });
     
-    instance.getTrackers(function (data){
+    currentInstance.getTrackers(function (data){
         var html = '';
         for(var i in data.trackers){
             var tracker = data.trackers[i];
             html += '<option value="'+ tracker.id +'">'+ tracker.name +'</option>';
         }
         $('#IssueTrackerId').html(html);
-        $('#IssueTrackerId').val(issue.tracker.id);
+        $('#IssueTrackerId').val(currentIssue.tracker.id);
     });
     
-    instance.getIssueStatuses(function (data){
+    currentInstance.getIssueStatuses(function (data){
         var html = '';
         for(var i in data.issue_statuses){
             var status = data.issue_statuses[i];
             html += '<option value="'+ status.id +'">'+ status.name +'</option>';
         }
         $('#IssueStatusId').html(html);
-        $('#IssueStatusId').val(issue.status.id);
+        $('#IssueStatusId').val(currentIssue.status.id);
     });
     
-    instance.getIssuePriorities(function (data){
+    currentInstance.getIssuePriorities(function (data){
         var html = '';
         for(var i in data.issue_priorities){
             var priority = data.issue_priorities[i];
             html += '<option value="'+ priority.id +'">'+ priority.name +'</option>';
         }
         $('#IssuePriorityId').html(html);
-        $('#IssuePriorityId').val(issue.priority.id);
+        $('#IssuePriorityId').val(currentIssue.priority.id);
     });
 }
 

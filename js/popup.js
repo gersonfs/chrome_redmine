@@ -68,6 +68,11 @@ function issueClicked(){
     $('#IssueTrackerId').html('<option value="'+ currentIssue.tracker.id +'">'+ currentIssue.tracker.name +'</option>');
     $('#IssueStatusId').html('<option value="'+ currentIssue.status.id +'">'+ currentIssue.status.name +'</option>');
     $('#IssuePriorityId').html('<option value="'+ currentIssue.priority.id +'">'+ currentIssue.priority.name +'</option>');
+    $('label[for="IssueAssignedToId"]').addClass('loading');
+    $('label[for="IssueTrackerId"]').addClass('loading');
+    $('label[for="IssueStatusId"]').addClass('loading');
+    $('label[for="IssuePriorityId"]').addClass('loading');
+    
     $('#Issue').show();
     $('#Issues').hide();
     

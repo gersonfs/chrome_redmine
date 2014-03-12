@@ -3,50 +3,47 @@
     <select name="issue[project_id]" id="IssueProjectId"></select>
 </div>
 
-<div class="input select issue_tracker_id float">
-    <label for="IssueTrackerId">Type</label>
-    <select name="issue[tracker_id]" id="IssueTrackerId"></select>
-</div>
+<div style="display: none;" id="NewIssueFields">
+    <div class="input select issue_tracker_id float">
+        <label for="IssueTrackerId">Type</label>
+        <select name="issue[tracker_id]" id="IssueTrackerId"></select>
+    </div>
 
-<div class="input select issue_status_id float">
-    <label for="IssueStatusId">Status</label>
-    <select name="issue[status_id]" id="IssueStatusId"></select>
-</div>
+    <div class="input select issue_status_id float">
+        <label for="IssueStatusId">Status</label>
+        <select name="issue[status_id]" id="IssueStatusId"></select>
+    </div>
 
-<div class="input select issue_priority_id">
-    <label for="IssuePriorityId">Priority</label>
-    <select name="issue[priority_id]" id="IssuePriorityId"></select>
-</div>
+    <div class="input select issue_priority_id">
+        <label for="IssuePriorityId">Priority</label>
+        <select name="issue[priority_id]" id="IssuePriorityId"></select>
+    </div>
 
-<div class="input select issue_subject">
-    <label for="IssueSubject">Subject</label>
-    <input style="width: 100%;" name="issue[subject]" id="IssueSubject" />
-</div>
+    <div class="input select issue_subject">
+        <label for="IssueSubject">Subject</label>
+        <input style="width: 100%;" name="issue[subject]" id="IssueSubject" />
+    </div>
 
-<div class="input select issue_description">
-    <label for="IssueDescription">Description</label>
-    <textarea style="width: 100%;" name="issue[description]" id="IssueDescription"></textarea>
-</div>
+    <div class="input select issue_description">
+        <label for="IssueDescription">Description</label>
+        <textarea style="width: 100%;" name="issue[description]" id="IssueDescription"></textarea>
+    </div>
 
-<div class="input select issue_assigned_to_id">
-    <label for="IssueAssignedToId">Assigned To</label>
-    <select style="width: 100%;" name="issue[assigned_to_id]" id="IssueAssignedToId"></select>
-</div>
+    <div class="input select issue_assigned_to_id">
+        <label for="IssueAssignedToId">Assigned To</label>
+        <select style="width: 100%;" name="issue[assigned_to_id]" id="IssueAssignedToId"></select>
+    </div>
 
-<div class="input select issue_start_date float">
-    <label for="IssueStartDate">Start Date</label>
-    <input name="issue[start_date]" id="IssueStartDate" />
-</div>
+    <div class="input select issue_start_date float">
+        <label for="IssueStartDate">Start Date</label>
+        <input name="issue[start_date]" id="IssueStartDate" />
+    </div>
 
-<div class="input select issue_estimated_hours">
-    <label for="IssueEstimatedHours">Estimated</label>
-    <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
-</div>
+    <div class="input select issue_estimated_hours">
+        <label for="IssueEstimatedHours">Estimated</label>
+        <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
+    </div>
 
-<div class="input select issue_notes">
-    <label for="IssueNotes">Notes</label>
-    <textarea style="width: 100%;" name="issue[notes]" id="IssueNotes"></textarea>
+    <input type="button" class="loading" name="" value="Save" id="SaveIssue" />
+    <input type="button" name="" value="Back" id="BackIssue" />
 </div>
-
-<input type="button" name="" value="Save" id="SaveIssue" />
-<input type="button" name="" value="Back" id="BackIssue" />

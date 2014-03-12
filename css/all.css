@@ -15,6 +15,14 @@
     background-size: 15px 15px;
 }
 
+input[type=button].loading{
+    background-image: url(../img/loading.gif);
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 15px;
+    background-size: 15px 15px;
+}
+
 .input{
     margin-bottom: 10px;
 }

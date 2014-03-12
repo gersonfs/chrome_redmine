@@ -56,6 +56,7 @@ function newIssue(){
         });
         
         $('#SaveIssue').click(function (){
+            $(this).addClass('loading');
             currentInstance.createIssue($('#Issue').serialize(), function (){
                 loadIssues();
                 $('#Issue').html('');
@@ -64,11 +65,21 @@ function newIssue(){
             });
         });
         
-        setLoading();
-        
+        loadProjects();
         loadTrackers();
         loadIssueStatuses();
         loadIssuePriorities();
+        
+        $('#IssueProjectId').change(function (){
+            
+            if($(this).val().length === 0){
+                $('#NewIssueFields').hide();
+                return;
+            }
+            
+            $('#NewIssueFields').show();
+            loadProjectMemberships($(this).val());
+        });
         
         $('#Issue').show();
         $('#Issues').hide();
@@ -95,6 +106,7 @@ function issueClicked(){
         });
 
         $('#SaveIssue').click(function (){
+            $(this).addClass('loading');
             currentInstance.updateIssue(currentIssue.id, $('#Issue').serialize(), function (){
                 loadIssues();
                 $('#Issue').html('');
@@ -104,7 +116,6 @@ function issueClicked(){
         });
         
         setDefaultValues();
-        setLoading();
         
         $('#Issue').show();
         $('#Issues').hide();
@@ -130,13 +141,6 @@ function setDefaultValues(){
     $('#IssuePriorityId').html('<option value="'+ currentIssue.priority.id +'">'+ currentIssue.priority.name +'</option>');
 }
 
-function setLoading(){
-    $('label[for="IssueAssignedToId"]').addClass('loading');
-    $('label[for="IssueTrackerId"]').addClass('loading');
-    $('label[for="IssueStatusId"]').addClass('loading');
-    $('label[for="IssuePriorityId"]').addClass('loading');
-}
-
 function getIssue(serverId, issueId){
     var serverIssues = issues[serverId];
     for(var i in serverIssues){
@@ -148,6 +152,7 @@ function getIssue(serverId, issueId){
 }
 
 function loadProjectMemberships(projectId, defaultValue){
+    $('label[for="IssueAssignedToId"]').addClass('loading');
     currentInstance.getProjectMemberships(projectId, function (data){
         var html = '<option value=""></option>';
         for(var i in data.memberships){
@@ -171,6 +176,7 @@ function loadProjectMemberships(projectId, defaultValue){
 }
 
 function loadTrackers(defaultValue){
+    $('label[for="IssueTrackerId"]').addClass('loading');
     currentInstance.getTrackers(function (data){
         var html = '';
         for(var i in data.trackers){
@@ -187,6 +193,7 @@ function loadTrackers(defaultValue){
 }
 
 function loadIssueStatuses(defaultValue){
+    $('label[for="IssueStatusId"]').addClass('loading');
     currentInstance.getIssueStatuses(function (data){
         var html = '';
         for(var i in data.issue_statuses){
@@ -203,17 +210,37 @@ function loadIssueStatuses(defaultValue){
 }
 
 function loadIssuePriorities(defaultValue){
+    $('label[for="IssuePriorityId"]').addClass('loading');
     currentInstance.getIssuePriorities(function (data){
         var html = '';
         for(var i in data.issue_priorities){
             var priority = data.issue_priorities[i];
             html += '<option value="'+ priority.id +'">'+ priority.name +'</option>';
+            if(typeof(defaultValue) === 'undefined' && typeof(priority.is_default) !== 'undefined'){
+                defaultValue = priority.id;
+            }
         }
         $('#IssuePriorityId').html(html);
         $('label[for="IssuePriorityId"]').removeClass('loading');
         
         if(typeof(defaultValue) !== 'undefined'){
             $('#IssuePriorityId').val(defaultValue);
+        }
+    });
+}
+
+function loadProjects(defaultValue){
+    $('label[for="IssueProjectId"]').addClass('loading');
+    currentInstance.getAllProjects(function (projects){
+        var html = '<option value="">Select a project</option>';
+        for(var i in projects){
+            html += '<option value="'+ projects[i].id +'">'+ projects[i].name +'</option>';
+        }
+        $('#IssueProjectId').html(html);
+        $('label[for="IssueProjectId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssueProjectId').val(defaultValue);
         }
     });
 }

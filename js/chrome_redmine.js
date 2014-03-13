@@ -27,12 +27,12 @@ var ChromeRedmine = function (){
 
     this.addRedmineServer = function (name, url, userKey){
         
-        var server = new RedmineServer({
-            'id': (new Date()).getTime(), 
-            'name': name, 
-            'url': url, 
-            'userKey': userKey
-        });
+        var server = new RedmineServer(
+            (new Date()).getTime(), 
+            name, 
+            url, 
+            userKey
+        );
 
         var servers = this.loadRedmineServers();
         servers.push(server);

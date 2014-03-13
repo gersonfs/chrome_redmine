@@ -6,6 +6,9 @@ $(function (){
             var name = $('#ServerName').val();
             var url = $('#ServerUrl').val();
             var userKey = $('#ServerUserKey').val();
+            if(!url.match(/\/$/)){
+                url += '/';
+            }
             cr.addRedmineServer(name, url, userKey);
             renderServers();
         }catch(e){

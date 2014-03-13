@@ -5,39 +5,31 @@ var currentInstance;
 
 $(function (){
     loadIssues();
-    
-    $('#BackIssue').click(function (){
-        $('#Issue').hide();
-        $('#Issues').show();
-    });
-    
-    $('#SaveIssue').click(function (){
-        currentInstance.updateIssue(currentIssue.id, $('#Issue').serialize(), function (){
-            loadIssues();
-            $('#Issue').hide();
-            $('#Issues').show();
-        });
-    });
 });
 
 function loadIssues(){
     var cr = new ChromeRedmine();
     var servers = cr.getRedmineServers();
     var totalIssues = 0;
-    $('#Issues').html('');
+    $('#Issues').html('<div class="loading"></div>');
     for(i in servers){
         var ri = new RedmineInstance(servers[i]);
         ri.getAllOpenIssuesAssignedToMe(function (serverIssues){
+            $('#Issues div.loading').remove();
             issues[this.redmineServer.getId()] = serverIssues;
-            $('#Issues').append('<h1>'+ this.redmineServer.name +'</h1>');
+            $('#Issues').append('<h1>'+ this.redmineServer.name +' <a data-server-id="'+ this.redmineServer.getId() +'" href="new_issue.html" class="new_issue">New Issue</a></h1>');
+            var html = '<div class="project_issues">';
             for(i in serverIssues){
                 i = i * 1;
                 var issue = serverIssues[i];
                 var description = '(' + issue.priority.name + ') ' + moment(issue.start_date).format('DD/MM/YY') + ' - ' + issue.subject;
-                $('#Issues').append((i+1) + ' - <a data-server-id="'+ this.redmineServer.getId() +'" data-issue-id="'+ issue.id +'" href="#">' + description + '</a><br />');
+                html += (i+1) + ' - <a data-server-id="'+ this.redmineServer.getId() +'" data-issue-id="'+ issue.id +'" href="edit_issue.html">' + description + '</a><br />';
             }
+            html += '</div>';
+            $('#Issues').append(html);
             
-            $('#Issues a').click(issueClicked);
+            $('#Issues div.project_issues a').click(issueClicked);
+            $('#Issues h1 a').click(newIssue);
             
             totalIssues += serverIssues.length;
             
@@ -50,15 +42,95 @@ function loadIssues(){
     }
 }
 
+function newIssue(){
+    var serverId = $(this).data('server-id') * 1;
+    var cr = new ChromeRedmine();
+    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    
+    $.get(this.href, function (data){
+        $('#Issue').html(data);
+        
+        $('#BackIssue').click(function (){
+            $('#Issue').html('');
+            $('#Issue').hide('');
+            $('#Issues').show();
+        });
+        
+        $('#SaveIssue').click(function (){
+            $(this).addClass('loading');
+            currentInstance.createIssue($('#Issue').serialize(), function (){
+                loadIssues();
+                $('#Issue').html('');
+                $('#Issue').hide('');
+                $('#Issues').show();
+            });
+        });
+        
+        loadProjects();
+        loadTrackers();
+        loadIssueStatuses();
+        loadIssuePriorities();
+        
+        $('#IssueProjectId').change(function (){
+            
+            if($(this).val().length === 0){
+                $('#NewIssueFields').hide();
+                return;
+            }
+            
+            $('#NewIssueFields').show();
+            loadProjectMemberships($(this).val());
+        });
+        
+        $('#Issue').show();
+        $('#Issues').hide();
+    });
+    
+    return false;
+}
+
 function issueClicked(){
     var serverId = $(this).data('server-id') * 1;
     var issueId = $(this).data('issue-id') * 1;
     
     var cr = new ChromeRedmine();
     currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
-    
     currentIssue = getIssue(serverId, issueId);
     
+    $.get(this.href, function (data){
+        $('#Issue').html(data);
+        
+        $('#BackIssue').click(function (){
+            $('#Issue').html('');
+            $('#Issue').hide('');
+            $('#Issues').show();
+        });
+
+        $('#SaveIssue').click(function (){
+            $(this).addClass('loading');
+            currentInstance.updateIssue(currentIssue.id, $('#Issue').serialize(), function (){
+                loadIssues();
+                $('#Issue').html('');
+                $('#Issue').hide('');
+                $('#Issues').show();
+            });
+        });
+        
+        setDefaultValues();
+        
+        $('#Issue').show();
+        $('#Issues').hide();
+        
+        loadProjectMemberships(currentIssue.project.id, currentIssue.assigned_to.id);
+        loadTrackers(currentIssue.tracker.id);
+        loadIssueStatuses(currentIssue.status.id);
+        loadIssuePriorities(currentIssue.priority.id);
+    });
+    
+    return false;
+}
+
+function setDefaultValues(){
     $('#IssueProjectId').val(currentIssue.project.id);
     $('#IssueSubject').val(currentIssue.subject);
     $('#IssueDescription').val(currentIssue.description);
@@ -68,59 +140,6 @@ function issueClicked(){
     $('#IssueTrackerId').html('<option value="'+ currentIssue.tracker.id +'">'+ currentIssue.tracker.name +'</option>');
     $('#IssueStatusId').html('<option value="'+ currentIssue.status.id +'">'+ currentIssue.status.name +'</option>');
     $('#IssuePriorityId').html('<option value="'+ currentIssue.priority.id +'">'+ currentIssue.priority.name +'</option>');
-    $('#Issue').show();
-    $('#Issues').hide();
-    
-    currentInstance.getProjectMemberships(currentIssue.project.id, function (data){
-        var html = '<option value=""></option>';
-        for(var i in data.memberships){
-            var member = data.memberships[i];
-            
-            if(typeof(member.user) != 'undefined'){
-                html += '<option value="'+ member.user.id +'">'+ member.user.name +'</option>';
-            }
-            
-            if(typeof(member.group) != 'undefined'){
-                html += '<option value="'+ member.group.id +'">'+ member.group.name +'</option>';
-            }
-        }
-        $('#IssueAssignedToId').html(html);
-        $('#IssueAssignedToId').val(currentIssue.assigned_to.id);
-        $('label[for="IssueAssignedToId"]').removeClass('loading');
-    });
-    
-    currentInstance.getTrackers(function (data){
-        var html = '';
-        for(var i in data.trackers){
-            var tracker = data.trackers[i];
-            html += '<option value="'+ tracker.id +'">'+ tracker.name +'</option>';
-        }
-        $('#IssueTrackerId').html(html);
-        $('#IssueTrackerId').val(currentIssue.tracker.id);
-        $('label[for="IssueTrackerId"]').removeClass('loading');
-    });
-    
-    currentInstance.getIssueStatuses(function (data){
-        var html = '';
-        for(var i in data.issue_statuses){
-            var status = data.issue_statuses[i];
-            html += '<option value="'+ status.id +'">'+ status.name +'</option>';
-        }
-        $('#IssueStatusId').html(html);
-        $('#IssueStatusId').val(currentIssue.status.id);
-        $('label[for="IssueStatusId"]').removeClass('loading');
-    });
-    
-    currentInstance.getIssuePriorities(function (data){
-        var html = '';
-        for(var i in data.issue_priorities){
-            var priority = data.issue_priorities[i];
-            html += '<option value="'+ priority.id +'">'+ priority.name +'</option>';
-        }
-        $('#IssuePriorityId').html(html);
-        $('#IssuePriorityId').val(currentIssue.priority.id);
-        $('label[for="IssuePriorityId"]').removeClass('loading');
-    });
 }
 
 function getIssue(serverId, issueId){
@@ -131,4 +150,98 @@ function getIssue(serverId, issueId){
         }
     }
     return null;
+}
+
+function loadProjectMemberships(projectId, defaultValue){
+    $('label[for="IssueAssignedToId"]').addClass('loading');
+    currentInstance.getProjectMemberships(projectId, function (data){
+        var html = '<option value=""></option>';
+        for(var i in data.memberships){
+            var member = data.memberships[i];
+
+            if(typeof(member.user) != 'undefined'){
+                html += '<option value="'+ member.user.id +'">'+ member.user.name +'</option>';
+            }
+
+            if(typeof(member.group) != 'undefined'){
+                html += '<option value="'+ member.group.id +'">'+ member.group.name +'</option>';
+            }
+        }
+        $('#IssueAssignedToId').html(html);
+        $('label[for="IssueAssignedToId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssueAssignedToId').val(defaultValue);
+        }
+    });
+}
+
+function loadTrackers(defaultValue){
+    $('label[for="IssueTrackerId"]').addClass('loading');
+    currentInstance.getTrackers(function (data){
+        var html = '';
+        for(var i in data.trackers){
+            var tracker = data.trackers[i];
+            html += '<option value="'+ tracker.id +'">'+ tracker.name +'</option>';
+        }
+        $('#IssueTrackerId').html(html);
+        $('label[for="IssueTrackerId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssueTrackerId').val(defaultValue);
+        }
+    });
+}
+
+function loadIssueStatuses(defaultValue){
+    $('label[for="IssueStatusId"]').addClass('loading');
+    currentInstance.getIssueStatuses(function (data){
+        var html = '';
+        for(var i in data.issue_statuses){
+            var status = data.issue_statuses[i];
+            html += '<option value="'+ status.id +'">'+ status.name +'</option>';
+        }
+        $('#IssueStatusId').html(html);
+        $('label[for="IssueStatusId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssueStatusId').val(defaultValue);
+        }
+    });
+}
+
+function loadIssuePriorities(defaultValue){
+    $('label[for="IssuePriorityId"]').addClass('loading');
+    currentInstance.getIssuePriorities(function (data){
+        var html = '';
+        for(var i in data.issue_priorities){
+            var priority = data.issue_priorities[i];
+            html += '<option value="'+ priority.id +'">'+ priority.name +'</option>';
+            if(typeof(defaultValue) === 'undefined' && typeof(priority.is_default) !== 'undefined'){
+                defaultValue = priority.id;
+            }
+        }
+        $('#IssuePriorityId').html(html);
+        $('label[for="IssuePriorityId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssuePriorityId').val(defaultValue);
+        }
+    });
+}
+
+function loadProjects(defaultValue){
+    $('label[for="IssueProjectId"]').addClass('loading');
+    currentInstance.getAllProjects(function (projects){
+        var html = '<option value="">Select a project</option>';
+        for(var i in projects){
+            html += '<option value="'+ projects[i].id +'">'+ projects[i].name +'</option>';
+        }
+        $('#IssueProjectId').html(html);
+        $('label[for="IssueProjectId"]').removeClass('loading');
+        
+        if(typeof(defaultValue) !== 'undefined'){
+            $('#IssueProjectId').val(defaultValue);
+        }
+    });
 }

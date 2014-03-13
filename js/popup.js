@@ -11,10 +11,11 @@ function loadIssues(){
     var cr = new ChromeRedmine();
     var servers = cr.getRedmineServers();
     var totalIssues = 0;
-    $('#Issues').html('');
+    $('#Issues').html('<div class="loading"></div>');
     for(i in servers){
         var ri = new RedmineInstance(servers[i]);
         ri.getAllOpenIssuesAssignedToMe(function (serverIssues){
+            $('#Issues div.loading').remove();
             issues[this.redmineServer.getId()] = serverIssues;
             $('#Issues').append('<h1>'+ this.redmineServer.name +' <a data-server-id="'+ this.redmineServer.getId() +'" href="new_issue.html" class="new_issue">New Issue</a></h1>');
             var html = '<div class="project_issues">';

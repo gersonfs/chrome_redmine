@@ -17,7 +17,11 @@ function loadIssues(){
         ri.getAllOpenIssuesAssignedToMe(function (serverIssues){
             $('#Issues div.loading').remove();
             issues[this.redmineServer.getId()] = serverIssues;
-            $('#Issues').append('<h1>'+ this.redmineServer.name +' <a data-server-id="'+ this.redmineServer.getId() +'" href="new_issue.html" class="new_issue">New Issue</a></h1>');
+            var html = '<h1>'+ this.redmineServer.name +' - <a data-server-id="'+ this.redmineServer.getId() + '" href="new_issue.html" class="new_issue">New Issue</a> - ';
+            html += '<a data-server-id="'+ this.redmineServer.getId() + '" href="" class="list">List Issues</a>';
+            html += '</h1>';
+            
+            $('#Issues').append(html);
             var html = '<div class="project_issues">';
             for(i in serverIssues){
                 i = i * 1;
@@ -29,7 +33,8 @@ function loadIssues(){
             $('#Issues').append(html);
             
             $('#Issues div.project_issues a').click(issueClicked);
-            $('#Issues h1 a').click(newIssue);
+            $('#Issues h1 a.new_issue').click(newIssue);
+            $('#Issues h1 a.list').click(listIssuesByUser);
             
             totalIssues += serverIssues.length;
             
@@ -40,6 +45,53 @@ function loadIssues(){
     if(servers.length === 0){
         $('body').append('<div class="alert error">Não há servidores redmine configurados</div>');
     }
+}
+
+function listIssuesByUser(){
+    var serverId = $(this).data('server-id') * 1;
+    var cr = new ChromeRedmine();
+    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    
+    $('#ListIssues').html('<div class="loading"></div>');
+    
+    currentInstance.getAllUsers(function (users){
+        currentInstance.getAllOpenIssues(function (issues){
+            var html = '';
+            for(i in users){
+                var user = users[i];
+                userIssues = getUserIssues(user, issues);
+                html += '<strong>' + user.firstname + ' ' + user.lastname + '</strong><br />';
+                html += '<div class="user_issues">';
+                for(i in userIssues){
+                    i = i * 1;
+                    var issue = userIssues[i];
+                    var description = '(' + issue.priority.name + ') ' + moment(issue.start_date).format('DD/MM/YY') + ' - ' + issue.subject;
+                    html += (i+1) + ' - <a data-server-id="'+ this.redmineServer.getId() +'" data-issue-id="'+ issue.id +'" href="edit_issue.html">' + description + '</a><br />';
+                }
+                html += '</div><br />';
+            }
+            $('#ListIssues').html(html);
+            $('#Issues').hide();
+            $('#ListIssues').show();
+        });
+    });
+    
+    return false;
+}
+
+function getUserIssues(user, issues){
+    var issueList = [];
+    for(var i in issues){
+        if(typeof(issues[i].assigned_to) === 'undefined'){
+            continue;
+        }
+        
+        if(issues[i].assigned_to.id == user.id){
+            issueList.push(issues[i]);
+        }
+    }
+    
+    return issueList;
 }
 
 function newIssue(){

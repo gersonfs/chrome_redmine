@@ -17,6 +17,14 @@ var RedmineInstance = function (redmineServer){
         this.listAll(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open'});
     };
     
+    this.getAllOpenIssues = function (onReadyCallback){
+        this.listAll(onReadyCallback, 'issues', {status_id: 'open'});
+    };
+    
+    this.getAllUsers = function (onReadyCallback){
+        this.listAll(onReadyCallback, 'users');
+    };
+    
     this.listAll = function (onReadyCallback, resource, parameters){
         var fullList = [];
         var defaultParameters = $.extend({offest: 0}, parameters);

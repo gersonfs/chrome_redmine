@@ -116,8 +116,13 @@ var RedmineIssueForm = function(redmineInstance) {
         }
         
         $('#main').html('<div class="loading"></div>');
+        
+        
+        
+        
         var self = this;
         $.get('/edit_issue.html', function (data){
+            
             $('#main').html(data);
             $('#BackIssue').click(backCallback);
             $('#SaveIssue').click(function (){
@@ -135,6 +140,24 @@ var RedmineIssueForm = function(redmineInstance) {
             self.loadTrackers(issue.tracker.id);
             self.loadIssueStatuses(issue.status.id);
             self.loadIssuePriorities(issue.priority.id);
+            
+            self.redmineInstance.getIssue(issue.id, function (data){
+                if(typeof(data.issue.journals) !== 'undefined'){
+                    for(var i in data.issue.journals){
+                        var journal = data.issue.journals[i];
+                        if(typeof(journal.notes) !== 'undefined' && journal.notes.length > 0){
+                            $('#Journals').append('<p><strong>'+ journal.user.name +':</strong> '+ journal.notes +'</p>')
+                        }
+                    }
+                }
+                
+                if(typeof(data.issue.attachments) !== 'undefined'){
+                    for(var i in data.issue.attachments){
+                        var attachment = data.issue.attachments[i];
+                        $('#Attachmets').append('<p><a href="'+ attachment.content_url +'" target="_blank">'+ attachment.filename +'</a></p>')
+                    }
+                }
+            }, 'attachments,journals');
         });
     };
     

@@ -101,9 +101,14 @@ var RedmineInstance = function (redmineServer){
         this.list(onReadyCallback, 'projects/'+ project_id +'/issue_categories');
     };
     
-    this.getIssue = function (issue_id, onReadyCallback){
+    this.getIssue = function (issue_id, onReadyCallback, include){
+        var url = this.getServerUrl() + 'issues/' + issue_id + '.json';
+        if(typeof(include) !== 'undefined'){
+            url += '?include=' + include;
+        }
+        
         this.request({
-            url: this.getServerUrl() + 'issues/' + issue_id + '.json',
+            url: url,
             success: function (data){
                 onReadyCallback.bind(this)(data);
             }

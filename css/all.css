@@ -1,5 +1,5 @@
 *{
-    font-size: .94em;
+    font-size: 13px;
     font-family: Helvetica, arial, freesans, clean, sans-serif;
 }
 
@@ -35,6 +35,10 @@ input[type=button].loading{
 
 .float{
     float: left;
+}
+
+.time_entry_comments{
+    clear: left;
 }
 
 .button {

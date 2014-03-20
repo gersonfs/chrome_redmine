@@ -1,49 +1,74 @@
-<input type="hidden" name="issue[project_id]" id="IssueProjectId" />
+<form id="Issue">
+    <h1></h1>
+    <input type="hidden" name="issue[project_id]" id="IssueProjectId" />
 
-<div class="input select issue_tracker_id float">
-    <label for="IssueTrackerId">Type</label>
-    <select name="issue[tracker_id]" id="IssueTrackerId"></select>
-</div>
+    <div class="input select issue_tracker_id float">
+        <label for="IssueTrackerId">Type</label>
+        <select name="issue[tracker_id]" id="IssueTrackerId"></select>
+    </div>
 
-<div class="input select issue_status_id float">
-    <label for="IssueStatusId">Status</label>
-    <select name="issue[status_id]" id="IssueStatusId"></select>
-</div>
+    <div class="input select issue_status_id float">
+        <label for="IssueStatusId">Status</label>
+        <select name="issue[status_id]" id="IssueStatusId"></select>
+    </div>
 
-<div class="input select issue_priority_id">
-    <label for="IssuePriorityId">Priority</label>
-    <select name="issue[priority_id]" id="IssuePriorityId"></select>
-</div>
+    <div class="input select issue_priority_id">
+        <label for="IssuePriorityId">Priority</label>
+        <select name="issue[priority_id]" id="IssuePriorityId"></select>
+    </div>
 
-<div class="input select issue_subject">
-    <label for="IssueSubject">Subject</label>
-    <input style="width: 100%;" name="issue[subject]" id="IssueSubject" />
-</div>
+    <div class="input select issue_subject">
+        <label for="IssueSubject">Subject</label>
+        <input style="width: 100%;" name="issue[subject]" id="IssueSubject" />
+    </div>
 
-<div class="input select issue_description">
-    <label for="IssueDescription">Description</label>
-    <textarea style="width: 100%;" name="issue[description]" id="IssueDescription"></textarea>
-</div>
+    <div class="input select issue_description">
+        <label for="IssueDescription">Description</label>
+        <textarea style="width: 100%;" name="issue[description]" id="IssueDescription"></textarea>
+    </div>
 
-<div class="input select issue_assigned_to_id">
-    <label for="IssueAssignedToId">Assigned To</label>
-    <select style="width: 100%;" name="issue[assigned_to_id]" id="IssueAssignedToId"></select>
-</div>
+    <div class="input select issue_assigned_to_id">
+        <label for="IssueAssignedToId">Assigned To</label>
+        <select style="width: 100%;" name="issue[assigned_to_id]" id="IssueAssignedToId"></select>
+    </div>
 
-<div class="input select issue_start_date float">
-    <label for="IssueStartDate">Start Date</label>
-    <input name="issue[start_date]" id="IssueStartDate" />
-</div>
+    <div class="input select issue_start_date float">
+        <label for="IssueStartDate">Start Date</label>
+        <input name="issue[start_date]" id="IssueStartDate" />
+    </div>
 
-<div class="input select issue_estimated_hours">
-    <label for="IssueEstimatedHours">Estimated</label>
-    <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
-</div>
+    <div class="input select issue_estimated_hours">
+        <label for="IssueEstimatedHours">Estimated</label>
+        <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
+    </div>
+    
+    <div id="Journals"></div>
+    <div id="Attachmets"></div>
 
-<div class="input select issue_notes">
-    <label for="IssueNotes">Notes</label>
-    <textarea style="width: 100%;" name="issue[notes]" id="IssueNotes"></textarea>
-</div>
+    <div class="input select issue_notes">
+        <label for="IssueNotes">Notes</label>
+        <textarea style="width: 100%;" name="issue[notes]" id="IssueNotes"></textarea>
+    </div>
+    
+    <fieldset id="TimeEntry">
+        <legend>Time Entry</legend>
+        <input type="hidden" name="time_entry[issue_id]" id="TimeEntryIssueId" />
+        <div class="input select time_entry_hours float">
+            <label for="TimeEntryHours">Hours</label>
+            <input type="number" name="time_entry[hours]" id="TimeEntryHours" />
+        </div>
 
-<input type="button" class="button" name="" value="Save" id="SaveIssue" />
-<input type="button" class="button" name="" value="Back" id="BackIssue" />
+        <div class="input select time_entry_activity_id">
+            <label for="TimeEntryActivityId">Activity</label>
+            <select name="time_entry[activity_id]" id="TimeEntryActivityId"></select>
+        </div>
+
+        <div class="input select time_entry_comments">
+            <label for="TimeEntryComments">Comments</label>
+            <input style="width: 100%" type="text" name="time_entry[comments]" id="TimeEntryComments" />
+        </div>
+    </fieldset>
+
+    <input type="button" class="button" name="" value="Save" id="SaveIssue" />
+    <input type="button" class="button" name="" value="Back" id="BackIssue" />
+</form>

@@ -93,6 +93,10 @@ var RedmineInstance = function (redmineServer){
         this.list(onReadyCallback, 'issue_statuses');
     };
     
+    this.getTimeEntryActivities = function (onReadyCallback){
+        this.list(onReadyCallback, 'enumerations/time_entry_activities');
+    };
+    
     this.getIssuePriorities = function (onReadyCallback){
         this.list(onReadyCallback, 'enumerations/issue_priorities');
     };

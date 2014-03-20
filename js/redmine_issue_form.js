@@ -58,6 +58,27 @@ var RedmineIssueForm = function(redmineInstance) {
             }
         });
     };
+    
+    this.loadTimeEntryActivities = function() {
+        $('label[for="TimeEntryActivityId"]').addClass('loading');
+        this.redmineInstance.getTimeEntryActivities(function(data) {
+            var html = '<option value=""></option>';
+            var defaultValue = null;
+            for (var i in data.time_entry_activities) {
+                var time_entry = data.time_entry_activities[i];
+                html += '<option value="' + time_entry.id + '">' + time_entry.name + '</option>';
+                if(typeof (time_entry.is_default) !== 'undefined') {
+                    defaultValue = time_entry.id;
+                }
+            }
+            $('#TimeEntryActivityId').html(html);
+            $('label[for="TimeEntryActivityId"]').removeClass('loading');
+
+            if (defaultValue !== null) {
+                $('#TimeEntryActivityId').val(defaultValue);
+            }
+        });
+    };
 
     this.loadIssuePriorities = function(defaultValue) {
         $('label[for="IssuePriorityId"]').addClass('loading');
@@ -108,6 +129,7 @@ var RedmineIssueForm = function(redmineInstance) {
         $('#IssueTrackerId').html('<option value="'+ issue.tracker.id +'">'+ issue.tracker.name +'</option>');
         $('#IssueStatusId').html('<option value="'+ issue.status.id +'">'+ issue.status.name +'</option>');
         $('#IssuePriorityId').html('<option value="'+ issue.priority.id +'">'+ issue.priority.name +'</option>');
+        $('#TimeEntryIssueId').val(issue.id);
     };
     
     this.edit = function (issue, afterSaveCallback, backCallback){
@@ -117,9 +139,6 @@ var RedmineIssueForm = function(redmineInstance) {
         
         $('#main').html('<div class="loading"></div>');
         
-        
-        
-        
         var self = this;
         $.get('/edit_issue.html', function (data){
             
@@ -127,6 +146,11 @@ var RedmineIssueForm = function(redmineInstance) {
             $('#BackIssue').click(backCallback);
             $('#SaveIssue').click(function (){
                 $(this).addClass('loading');
+                
+                if($('#TimeEntryHours').val().length === 0){
+                    $('#TimeEntry').remove();
+                }
+                
                 self.redmineInstance.updateIssue(issue.id, $('#Issue').serialize(), function (){
                     afterSaveCallback();
                 });
@@ -140,6 +164,7 @@ var RedmineIssueForm = function(redmineInstance) {
             self.loadTrackers(issue.tracker.id);
             self.loadIssueStatuses(issue.status.id);
             self.loadIssuePriorities(issue.priority.id);
+            self.loadTimeEntryActivities();
             
             self.redmineInstance.getIssue(issue.id, function (data){
                 if(typeof(data.issue.journals) !== 'undefined'){

@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/all.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/popup.css" type="text/css" media="screen" />
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/redmine_server.js"></script>
+    <script src="js/redmine_instance.js"></script>
+    <script src="js/chrome_redmine.js"></script>
+    <script src="js/time_entry.js"></script>
+  </head>
+  <body>
+      <fieldset id="TimeEntry">
+          <legend>Time Entry</legend>
+          <form action="" method="post">
+            
+            <div class="input select time_entry_project_id float">
+                <label for="TimeEntryProjectId">Project</label>
+                <select name="time_entry[project_id]" id="TimeEntryProjectId"></select>
+            </div>
+
+            <div class="input select time_entry_issue_id">
+                <label for="TimeEntryIssueId">Issue ID</label>
+                <input type="number" name="time_entry[issue_id]" id="TimeEntryIssueId" />
+            </div>
+
+            <div class="input select time_entry_hours float">
+                <label for="TimeEntryHours">Hours</label>
+                <input type="number" name="time_entry[hours]" id="TimeEntryHours" />
+            </div>
+
+            <div class="input select time_entry_activity_id">
+                <label for="TimeEntryActivityId">Activity</label>
+                <select name="time_entry[activity_id]" id="TimeEntryActivityId"></select>
+            </div>
+
+            <div class="input select time_entry_comments">
+                <label for="TimeEntryComments">Comments</label>
+                <input style="width: 100%" type="text" name="time_entry[comments]" id="TimeEntryComments" />
+            </div>
+
+            <input type="button" class="button" name="" value="Save" id="SaveIssue" />
+        </form>
+    </fieldset>
+  </body>
+</html>
+

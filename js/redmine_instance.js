@@ -149,6 +149,21 @@ var RedmineInstance = function (redmineServer){
         });
     };
     
+    this.createTimeEntry = function (data, onReadyCallback){
+        this.request({
+            url: this.getServerUrl() + 'time_entries.json',
+            type: 'POST',
+            data: data,
+            dataType: 'html',
+            success: function (){
+                onReadyCallback.bind(this)();
+            },
+            error: function (a, b, c){
+                alert("Erro ao criar uma entrada de tempo");
+            }
+        });
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

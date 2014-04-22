@@ -81,3 +81,8 @@ input[type=button].loading{
 	position:relative;
 	top:1px;
 }
+
+
+.time_entry_issue_id input{
+    width: 70px;
+}

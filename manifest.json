@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Chrome redmine integration",
+    "name": "OneHost Projects",
     "version": "0.1.0",
-    "description": "This extension allow integrate chrome with redmine",
+    "description": "Esta extensão permite integrar o Google Chrome™ com o Redmine",
     "permissions": [
         "http://*/*",
         "https://*/*"

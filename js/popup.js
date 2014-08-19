@@ -18,9 +18,10 @@ function loadIssuesAssignedToMe(){
         ri.getAllOpenIssuesAssignedToMe(function (serverIssues){
             
             globalIssues[this.redmineServer.getId()] = serverIssues;
-            var html = '<h1>'+ this.redmineServer.name +' - <a data-server-id="'+ this.redmineServer.getId() + '" href="new_issue.html" class="new_issue">New Issue</a> - ';
-            html += '<a data-server-id="'+ this.redmineServer.getId() + '" href="" class="list">List Issues</a>';
-            html += ' - <a href="time_entry.html?server_id='+ this.redmineServer.getId() +'" class="list">Add Time Entry</a>';
+            var html = '<h1>'+ this.redmineServer.name +' - <a data-server-id="'+ this.redmineServer.getId() + '" href="new_issue.html" class="new_issue">Nova Tarefa</a> - ';
+            html += '<a data-server-id="'+ this.redmineServer.getId() + '" href="" class="list">Listar Tarefas</a>';
+            html += ' - <a href="time_entry.html?server_id='+ this.redmineServer.getId() +'" class="list">Tempo Trab.</a>';
+            html += ' - <a href="ponto.html?server_id='+ this.redmineServer.getId() +'" class="list">Ponto</a>';
             html += '</h1>';
             html += '<div class="project_issues">';
             for(i in serverIssues){

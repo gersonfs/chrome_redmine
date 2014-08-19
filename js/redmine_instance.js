@@ -164,6 +164,48 @@ var RedmineInstance = function (redmineServer){
         });
     };
     
+    this.abrirPonto = function (callback){
+        this.request({
+            url: this.getServerUrl() + 'ow_pontos/abrir.json',
+            type: 'POST',
+            dataType: 'json',
+            success: function (retorno){
+                callback.bind(this)(retorno);
+            },
+            error: function (a, b, c){
+                alert("Erro ao abrir o ponto");
+            }
+        });
+    };
+    
+    this.fecharPonto = function (callback){
+        this.request({
+            url: this.getServerUrl() + 'ow_pontos/fechar.json',
+            type: 'POST',
+            dataType: 'json',
+            success: function (retorno){
+                callback.bind(this)(retorno);
+            },
+            error: function (a, b, c){
+                alert("Erro ao abrir o ponto");
+            }
+        });
+    };
+    
+    this.getPontos = function (callback){
+        this.request({
+            url: this.getServerUrl() + 'ow_pontos.json',
+            type: 'GET',
+            dataType: 'json',
+            success: function (retorno){
+                callback.bind(this)(retorno);
+            },
+            error: function (a, b, c){
+                alert("Erro ao buscar pontos");
+            }
+        });
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

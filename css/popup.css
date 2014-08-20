@@ -18,3 +18,20 @@ body {
     height: 120px;
     max-height: 250px;
 }
+
+#RelTempoTrabalho table,
+#RelTempoTrabalho div{
+    margin-bottom: 15px;
+}
+
+#RelTempoTrabalho table td{
+    width: 100px;
+}
+
+#RelTempoTrabalho table caption{
+    font-weight: bold;
+}
+
+#RelTempoTrabalho table tfoot{
+    font-style: italic;
+}

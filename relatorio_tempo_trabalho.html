@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Relatorio tempo trabalho</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="css/all.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css/popup.css" type="text/css" media="screen" />
+        <script src="js/jquery-2.1.0.min.js"></script>
+        <script src="js/util.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/redmine_server.js"></script>
+        <script src="js/redmine_instance.js"></script>
+        <script src="js/chrome_redmine.js"></script>
+        <script src="js/relatorio_tempo_trabalho.js"></script>
+    </head>
+    <body>
+        <fieldset id="RelTempoTrabalho">
+            <legend>Relatório tempo de trabalho</legend>
+            <table id="EssaSemana">
+                <caption>Essa semana</caption>
+                <thead>
+                    <tr>
+                        <td>Dia</td>
+                        <td>Horas</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+
+            <table id="SemanaPassada">
+                <caption>Semana Passada</caption>
+                <thead>
+                    <tr>
+                        <td>Dia</td>
+                        <td>Horas</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+
+            <div><strong>Esse mês:</strong> <span id="EsseMes"></span></div>
+            <div><strong>Mês passado:</strong> <span id="MesPassado"></span></div>
+
+        </fieldset>
+    </body>
+</html>
+

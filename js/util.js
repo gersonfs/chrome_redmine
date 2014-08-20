@@ -33,6 +33,23 @@ function getStrDataHoraFromDate(date){
     return dia + '/' + mes + '/' + ano + ' ' + hora + ':' + min + ':' + seg;
 };
 
+
+function getStrDataFromDate(date){
+    var ano = date.getFullYear() + '';
+    var mes = (date.getMonth() + 1) + '';
+    var dia = date.getDate() + '';
+
+    if(mes.length === 1){
+        mes = '0' + mes;
+
+    }
+    if(dia.length === 1){
+        dia = '0' + dia;
+    }
+    
+    return dia + '/' + mes + '/' + ano;
+};
+
 function getDiaDaSemana(date){
     var days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     

@@ -20,7 +20,7 @@ function formatarRelatorioTempo(id, relatorio){
     var totalHoras = 0;
     for(var i in relatorio){
         t = relatorio[i].time_entry;
-        data = getStrDataFromDate(new Date(t.spent_on));
+        data = getStrDataFromDate(t.spent_on);
         html += '<tr>';
         html += '<td>'+ data +'</td>';
         html += '<td>'+ t.hours.toFixed(1) +'</td>';

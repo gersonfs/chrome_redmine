@@ -35,6 +35,10 @@ function getStrDataHoraFromDate(date){
 
 
 function getStrDataFromDate(date){
+    if(typeof(date) === "string"){
+        var parts = date.match(/(\d+)/g);
+        return parts[2] + '/' + parts[1] + '/' + parts[0];
+    }
     var ano = date.getFullYear() + '';
     var mes = (date.getMonth() + 1) + '';
     var dia = date.getDate() + '';

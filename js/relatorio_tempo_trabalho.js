@@ -6,7 +6,7 @@ $(function (){
     currentInstance.getRelatorioTempoTrabalho(function (relatorio){
         
         var dadosEssaSemana = formatarRetornoRelatorio(relatorio.essa_semana, relatorio.essa_semana_ponto);
-        var dadosSemanaPassada = formatarRetornoRelatorio(relatorio.semana_passada, relatorio.semana_passad_ponto);
+        var dadosSemanaPassada = formatarRetornoRelatorio(relatorio.semana_passada, relatorio.semana_passada_ponto);
         
         formatarRelatorioTempo('#EssaSemana', dadosEssaSemana);
         formatarRelatorioTempo('#SemanaPassada', dadosSemanaPassada);

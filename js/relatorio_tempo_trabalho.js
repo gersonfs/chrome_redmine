@@ -26,12 +26,12 @@ function buscarDadosRelatorio(user_id){
         formatarRelatorioTempo('#SemanaPassada', dadosSemanaPassada);
         
         var esseMes = relatorio.esse_mes.length > 0 ? relatorio.esse_mes[0]['time_entry']['hours'] : 0;
-        var esseMesPonto = relatorio.esse_mes_ponto.length > 0 ? relatorio.esse_mes_ponto[0]['ow_ponto']['hours'] : 0;
+        var esseMesPonto = relatorio.esse_mes_ponto.length > 0 ? relatorio.esse_mes_ponto[0]['ow_rel_ponto']['hours'] : 0;
         $('#EsseMes').html(esseMes);
         $('#EsseMesPonto').html(esseMesPonto);
         
         var mesPassado = relatorio.mes_passado.length > 0 ? relatorio.mes_passado[0]['time_entry']['hours'] : 0;
-        var mesPassadoPonto = relatorio.mes_passado_ponto.length > 0 ? relatorio.mes_passado_ponto[0]['ow_ponto']['hours'] : 0;
+        var mesPassadoPonto = relatorio.mes_passado_ponto.length > 0 ? relatorio.mes_passado_ponto[0]['ow_rel_ponto']['hours'] : 0;
         $('#MesPassado').html(mesPassado);
         $('#MesPassadoPonto').html(mesPassadoPonto);
         
@@ -59,7 +59,7 @@ function formatarRetornoRelatorio(tempo_trabalho, ponto){
     var datas = [];
     
     for(var i in ponto){
-        var t1 = ponto[i].ow_ponto;
+        var t1 = ponto[i].ow_rel_ponto;
         datas.push(t1.date);
     }
     
@@ -76,7 +76,7 @@ function formatarRetornoRelatorio(tempo_trabalho, ponto){
     }
     
     for(var i in ponto){
-        var t1 = ponto[i].ow_ponto;
+        var t1 = ponto[i].ow_rel_ponto;
         obj[t1.date]['ponto'] = t1.hours;
     }
     

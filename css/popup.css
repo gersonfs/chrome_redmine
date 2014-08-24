@@ -35,3 +35,11 @@ body {
 #RelTempoTrabalho table tfoot{
     font-style: italic;
 }
+
+#RelTempoTrabalho table tr.red td{
+    background-color: red;
+}
+
+#RelTempoTrabalho table tr.green td{
+    background-color: green;
+}

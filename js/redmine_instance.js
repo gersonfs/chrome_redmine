@@ -206,9 +206,14 @@ var RedmineInstance = function (redmineServer){
         });
     };
     
-    this.getRelatorioTempoTrabalho = function(callback){
+    this.getRelatorioTempoTrabalho = function(callback, user_id){
+        var url = this.getServerUrl() + 'ow_util/tempo_trabalho.json';
+        if(typeof(user_id) !== 'undefined'){
+            url += '?user_id=' + user_id;
+        }
+        
         var options = {
-            url: this.getServerUrl() + 'ow_util/tempo_trabalho.json',
+            url: url,
             type: 'GET',
             success: function (data){
                 callback.bind(this)(data);

@@ -1,7 +1,21 @@
+var cr = new ChromeRedmine();
+var serverId = getURLVar('server_id');
+var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    
 $(function (){
-    var cr = new ChromeRedmine();
-    var serverId = getURLVar('server_id');
-    var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    $('#Users').change(function (){
+        if($('#Users').val().length > 0){
+            buscarDadosRelatorio($('#Users').val());
+            return;
+        }
+        
+        buscarDadosRelatorio();
+    });
+    
+    buscarDadosRelatorio();
+});
+
+function buscarDadosRelatorio(user_id){
     
     currentInstance.getRelatorioTempoTrabalho(function (relatorio){
         
@@ -13,21 +27,33 @@ $(function (){
         
         var esseMes = relatorio.esse_mes.length > 0 ? relatorio.esse_mes[0]['time_entry']['hours'] : 0;
         var esseMesPonto = relatorio.esse_mes_ponto.length > 0 ? relatorio.esse_mes_ponto[0]['ow_ponto']['hours'] : 0;
-        if(esseMesPonto === null){
-            esseMesPonto = 0;
-        }
         $('#EsseMes').html(esseMes);
         $('#EsseMesPonto').html(esseMesPonto);
         
         var mesPassado = relatorio.mes_passado.length > 0 ? relatorio.mes_passado[0]['time_entry']['hours'] : 0;
         var mesPassadoPonto = relatorio.mes_passado_ponto.length > 0 ? relatorio.mes_passado_ponto[0]['ow_ponto']['hours'] : 0;
-        if(mesPassadoPonto === null){
-            mesPassadoPonto = 0;
-        }
         $('#MesPassado').html(mesPassado);
         $('#MesPassadoPonto').html(mesPassadoPonto);
-    });
-});
+        
+        formatarSelectUsuarios(relatorio.users);
+        
+    }, user_id);
+}
+
+function formatarSelectUsuarios(usuarios){
+    if(usuarios.length === 0){
+        return;
+    }
+    
+    var html = '<option value=""></option>';
+    for(var i in usuarios){
+        var usuario = usuarios[i].user;
+        html += '<option value="'+ usuario.id +'">'+ usuario.mail +'</option>';
+    }
+    
+    $('#Users').html(html);
+    $('#Users').show();
+}
 
 function formatarRetornoRelatorio(tempo_trabalho, ponto){
     var datas = [];
@@ -70,7 +96,7 @@ function formatarRelatorioTempo(id, relatorio){
         t2 = typeof(relatorio[i]['ponto']) === 'undefined' ? 0 : relatorio[i]['ponto'];
         t2 *= 1.0;
         data = getStrDataFromDate(i);
-        html += '<tr>';
+        html += '<tr class="'+ getColorRelatorio(t1, t2) +'">';
         html += '<td>'+ data +'</td>';
         html += '<td>'+ t1 +'</td>';
         html += '<td>'+ t2.toFixed(1) +'</td>';
@@ -81,4 +107,16 @@ function formatarRelatorioTempo(id, relatorio){
     
     $(id + ' tbody').html(html);
     $(id + ' tfoot').html('<tr><td>Total</td><td>'+ totalHoras.toFixed(1) +'</td><td>'+ totalHorasPonto.toFixed(1) +'</td></tr>');
+}
+
+function getColorRelatorio(tempoTrabalho, tempoPonto){
+    if(tempoTrabalho === 0 || tempoPonto === 0){
+        return 'red';
+    }
+    
+    if(tempoPonto > tempoTrabalho){
+        return 'red';
+    }
+    
+    return 'green';
 }

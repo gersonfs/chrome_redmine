@@ -19,7 +19,7 @@ function loadIssuesAssignedToMe(){
             
             globalIssues[this.redmineServer.getId()] = serverIssues;
             var html = '<h1>'+ this.redmineServer.name +'<br >';
-            html += '<a data-server-id="'+ this.redmineServer.getId() + '" href="new_issue.html" class="new_issue">Nova Tarefa</a> - ';
+            html += '<a href="new_issue.html?server_id='+ this.redmineServer.getId() +'" class="new_issue">Nova Tarefa</a> - ';
             html += '<a data-server-id="'+ this.redmineServer.getId() + '" href="" class="list">Listar Tarefas</a>';
             html += ' - <a href="time_entry.html?server_id='+ this.redmineServer.getId() +'" class="list">Tempo Trab.</a>';
             html += ' - <a href="ponto.html?server_id='+ this.redmineServer.getId() +'" class="list">Ponto</a>';
@@ -120,10 +120,7 @@ function getUnassignedIssues(issues){
 }
 
 function newIssue(){
-    var serverId = $(this).data('server-id') * 1;
-    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
-    var issueForm = new RedmineIssueForm(currentInstance);
-    issueForm.add(loadIssuesAssignedToMe);
+    chrome.tabs.create({url: this.href});
     return false;
 }
 

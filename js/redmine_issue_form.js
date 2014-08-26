@@ -185,38 +185,4 @@ var RedmineIssueForm = function(redmineInstance) {
             }, 'attachments,journals');
         });
     };
-    
-    this.add = function (afterSaveCallback, backCallback){
-        if(typeof(backCallback) === 'undefined'){
-            backCallback = afterSaveCallback;
-        }
-        var self = this;
-        $.get('/new_issue.html', function (data){
-            $('#main').html(data);
-            $('#BackIssue').click(loadIssuesAssignedToMe);
-            $('#SaveIssue').click(function (){
-                $(this).addClass('loading');
-                self.redmineInstance.createIssue($('#Issue').serialize(), function (){
-                    afterSaveCallback();
-                });
-            });
-            
-            self.loadProjects();
-            self.loadTrackers();
-            self.loadIssueStatuses();
-            self.loadIssuePriorities();
-
-            $('#IssueProjectId').bind('change',{self: self}, function (e){
-                var self = e.data.self;
-
-                if($(this).val().length === 0){
-                    $('#NewIssueFields').hide();
-                    return;
-                }
-
-                $('#NewIssueFields').show();
-                self.loadProjectMemberships($(this).val());
-            });
-        });
-    };
 };

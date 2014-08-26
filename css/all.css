@@ -86,3 +86,7 @@ input[type=button].loading{
 .time_entry_issue_id input{
     width: 70px;
 }
+
+.clear{
+    clear: both;
+}

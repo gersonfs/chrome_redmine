@@ -90,3 +90,11 @@ input[type=button].loading{
 .clear{
     clear: both;
 }
+
+a.remover{
+    width: 16px;
+    height: 16px;
+    background-image: url(../img/remove.png);
+    display: inline-block;
+    cursor: pointer;
+}

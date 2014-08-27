@@ -1,5 +1,6 @@
 var RedmineIssueForm = function(redmineInstance) {
     this.redmineInstance = redmineInstance;
+    this.files = [];
     
     this.loadProjectMemberships = function(projectId, defaultValue) {
         $('label[for="IssueAssignedToId"]').addClass('loading');
@@ -184,5 +185,44 @@ var RedmineIssueForm = function(redmineInstance) {
                 }
             }, 'attachments,journals');
         });
+    };
+    
+    this.addFile = function (file){
+        this.files.push(file);
+        this.renderFiles();
+    };
+    
+    this.renderFiles = function (){
+        var html = '';
+        for(var i in this.files){
+            var file = this.files[i];
+            html += '<div id="file-'+ i +'">';
+            html +=     file.upload.filename + ' ';
+            html +=     '<input type="text" name="arquivos[]" />';
+            html +=     '<a title="Remover" data-file="'+ i +'" class="remover"></a>';
+            html += '</div>';
+        }
+        
+        $('#ListaArquivos').html(html);
+        
+        $('#ListaArquivos a.remover').bind('click', {self: this}, function (e){
+            e.data.self.removeAttachment($(this).attr('data-file'));
+        });
+        
+    };
+    
+    this.removeAttachment = function (index){
+        var id = this.getAttachmentId(this.files[index].upload.token);
+        this.redmineInstance.removeAttachment(id, (function (self, theIndex){
+            return function (){
+                self.files.splice(theIndex, 1);
+                self.renderFiles();
+            };
+        })(this, index));
+    };
+    
+    this.getAttachmentId = function (token){
+        var parts = token.split('.');
+        return parts[0];
     };
 };

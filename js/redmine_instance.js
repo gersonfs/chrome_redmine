@@ -223,6 +223,33 @@ var RedmineInstance = function (redmineServer){
         this.request(options);
     };
     
+    this.uploadFile = function (file, callback){
+        var options = {
+            url: this.getServerUrl() + 'uploads.json?filename=' + file.name,
+            type: 'POST',
+            contentType: 'application/octet-stream',
+            data: file,
+            processData: false,
+            context: this,
+            success: function (data){
+                callback.bind(this)(data);
+            }
+        };
+        this.request(options);
+    };
+    
+    this.removeAttachment = function (id, callbackSuccess){
+        var options = {
+            url: this.getServerUrl() + 'attachments/'+ id +'.js?attachment_id=' + id,
+            type: 'DELETE',
+            dataType : 'html',
+            success: function (){
+                callbackSuccess();
+            }
+        };
+        this.request(options);
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

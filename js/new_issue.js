@@ -7,6 +7,24 @@ $(function (){
     
     issueForm = new RedmineIssueForm(currentInstance);
     
+    
+    
+    $('#IssueFiles').on('change', function (e){
+        $('#ListaArquivos').html('<div class="loading"></div>')
+        var files = e.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            var callback = (function (theFile){
+                return function (e){
+                    e.upload.filename = theFile.name;
+                    e.upload.content_type = theFile.type;
+                    e.upload.size = theFile.size;
+                    issueForm.addFile(e);
+                };
+            })(f);
+            currentInstance.uploadFile(f, callback);
+        }
+    });
+    
     $('#SaveIssue').click(function (){
         $(this).addClass('loading');
         currentInstance.createIssue($('#Issue').serialize(), function (){

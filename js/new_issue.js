@@ -12,7 +12,7 @@ $(function (){
         $(this).addClass('loading');
         currentInstance.createIssue($('#Issue').serialize(), function (){
             chrome.tabs.getCurrent(function(tab) {
-                //chrome.tabs.remove(tab.id, function() { });
+                chrome.tabs.remove(tab.id, function() { });
             });
 
         });

@@ -41,15 +41,24 @@
         <label for="IssueEstimatedHours">Estimated</label>
         <input name="issue[estimated_hours]" id="IssueEstimatedHours" />
     </div>
+    <div class="clear"></div>
     
     <div id="Journals"></div>
     <div id="Attachmets"></div>
+    <div class="clear"></div>
 
     <div class="input select issue_notes">
         <label for="IssueNotes">Notes</label>
         <textarea style="width: 100%;" name="issue[notes]" id="IssueNotes"></textarea>
     </div>
-    
+    <!--
+    <div class="clear"></div>
+    <div class="input select">
+        <label for="IssueFiles">Files</label>
+        <input type="file" id="IssueFiles" multiple="multiple" />
+        <div id="ListaArquivos"></div>
+    </div>
+    -->
     <fieldset id="TimeEntry">
         <legend>Time Entry</legend>
         <input type="hidden" name="time_entry[issue_id]" id="TimeEntryIssueId" />

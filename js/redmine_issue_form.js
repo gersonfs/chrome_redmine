@@ -144,6 +144,7 @@ var RedmineIssueForm = function(redmineInstance) {
         $.get('/edit_issue.html', function (data){
             
             $('#main').html(data);
+            self.adicionarEventoArquivos();
             $('#BackIssue').click(backCallback);
             $('#SaveIssue').click(function (){
                 $(this).addClass('loading');
@@ -195,10 +196,13 @@ var RedmineIssueForm = function(redmineInstance) {
     this.renderFiles = function (){
         var html = '';
         for(var i in this.files){
-            var file = this.files[i];
+            var file = this.files[i].upload;
             html += '<div id="file-'+ i +'">';
-            html +=     file.upload.filename + ' ';
-            html +=     '<input type="text" name="arquivos[]" />';
+            html +=     file.filename + ' ';
+            html +=     '<input type="text" name="issue[uploads]['+ i +'][description]" />';
+            html +=     '<input type="hidden" name="issue[uploads]['+ i +'][token]" value="'+ file.token +'" />';
+            html +=     '<input type="hidden" name="issue[uploads]['+ i +'][filename]" value="'+ file.filename +'" />';
+            html +=     '<input type="hidden" name="issue[uploads]['+ i +'][content_type]" value="'+ file.content_type +'" />';
             html +=     '<a title="Remover" data-file="'+ i +'" class="remover"></a>';
             html += '</div>';
         }
@@ -224,5 +228,23 @@ var RedmineIssueForm = function(redmineInstance) {
     this.getAttachmentId = function (token){
         var parts = token.split('.');
         return parts[0];
+    };
+    
+    this.adicionarEventoArquivos = function(){
+        $('#IssueFiles').on('change', {self: this}, function (e){
+            $('#ListaArquivos').html('<div class="loading"></div>')
+            var files = e.target.files;
+            for (var i = 0, f; f = files[i]; i++) {
+                var callback = (function (theFile, issueForm){
+                    return function (e){
+                        e.upload.filename = theFile.name;
+                        e.upload.content_type = theFile.type;
+                        e.upload.size = theFile.size;
+                        issueForm.addFile(e);
+                    };
+                })(f, e.data.self);
+                e.data.self.redmineInstance.uploadFile(f, callback);
+            }
+        });
     };
 };

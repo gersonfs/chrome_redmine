@@ -133,59 +133,53 @@ var RedmineIssueForm = function(redmineInstance) {
         $('#TimeEntryIssueId').val(issue.id);
     };
     
-    this.edit = function (issue, afterSaveCallback, backCallback){
-        if(typeof(backCallback) === 'undefined'){
-            backCallback = afterSaveCallback;
-        }
+    this.edit = function (issue){
         
-        $('#main').html('<div class="loading"></div>');
-        
-        var self = this;
-        $.get('/edit_issue.html', function (data){
+        this.adicionarEventoArquivos();
+        $('#SaveIssue').bind('click', {self: this}, function (e){
+            var self = e.data.self;
             
-            $('#main').html(data);
-            self.adicionarEventoArquivos();
-            $('#BackIssue').click(backCallback);
-            $('#SaveIssue').click(function (){
-                $(this).addClass('loading');
-                
-                if($('#TimeEntryHours').val().length === 0){
-                    $('#TimeEntry').remove();
-                }
-                
-                self.redmineInstance.updateIssue(issue.id, $('#Issue').serialize(), function (){
-                    afterSaveCallback();
+            $(this).addClass('loading');
+
+            if($('#TimeEntryHours').val().length === 0){
+                $('#TimeEntry').remove();
+            }
+
+            self.redmineInstance.updateIssue(issue.id, $('#Issue').serialize(), function (){
+                chrome.tabs.getCurrent(function(tab) {
+                    chrome.tabs.remove(tab.id, function() { });
                 });
             });
-            self.setDefaultValues(issue);
-            if(typeof(issue.assigned_to) !== 'undefined'){
-                self.loadProjectMemberships(issue.project.id, issue.assigned_to.id);
-            }else{
-                self.loadProjectMemberships(issue.project.id);
-            }
-            self.loadTrackers(issue.tracker.id);
-            self.loadIssueStatuses(issue.status.id);
-            self.loadIssuePriorities(issue.priority.id);
-            self.loadTimeEntryActivities();
-            
-            self.redmineInstance.getIssue(issue.id, function (data){
-                if(typeof(data.issue.journals) !== 'undefined'){
-                    for(var i in data.issue.journals){
-                        var journal = data.issue.journals[i];
-                        if(typeof(journal.notes) !== 'undefined' && journal.notes.length > 0){
-                            $('#Journals').append('<p><strong>'+ journal.user.name +':</strong> '+ journal.notes +'</p>')
-                        }
-                    }
-                }
-                
-                if(typeof(data.issue.attachments) !== 'undefined'){
-                    for(var i in data.issue.attachments){
-                        var attachment = data.issue.attachments[i];
-                        $('#Attachmets').append('<p><a href="'+ attachment.content_url +'" target="_blank">'+ attachment.filename +'</a></p>')
-                    }
-                }
-            }, 'attachments,journals');
         });
+        
+        this.setDefaultValues(issue);
+        if(typeof(issue.assigned_to) !== 'undefined'){
+            this.loadProjectMemberships(issue.project.id, issue.assigned_to.id);
+        }else{
+            this.loadProjectMemberships(issue.project.id);
+        }
+        this.loadTrackers(issue.tracker.id);
+        this.loadIssueStatuses(issue.status.id);
+        this.loadIssuePriorities(issue.priority.id);
+        this.loadTimeEntryActivities();
+
+        this.redmineInstance.getIssue(issue.id, function (data){
+            if(typeof(data.issue.journals) !== 'undefined'){
+                for(var i in data.issue.journals){
+                    var journal = data.issue.journals[i];
+                    if(typeof(journal.notes) !== 'undefined' && journal.notes.length > 0){
+                        $('#Journals').append('<p><strong>'+ journal.user.name +':</strong> '+ journal.notes +'</p>')
+                    }
+                }
+            }
+
+            if(typeof(data.issue.attachments) !== 'undefined'){
+                for(var i in data.issue.attachments){
+                    var attachment = data.issue.attachments[i];
+                    $('#Attachmets').append('<p><a href="'+ attachment.content_url +'" target="_blank">'+ attachment.filename +'</a></p>')
+                }
+            }
+        }, 'attachments,journals');
     };
     
     this.addFile = function (file){

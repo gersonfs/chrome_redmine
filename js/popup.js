@@ -125,12 +125,10 @@ function newIssue(){
 }
 
 function editIssue(){
-    var serverId = $(this).data('server-id') * 1;
-    var issueId = $(this).data('issue-id') * 1;
-    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
-    currentIssue = getIssue(serverId, issueId);
-    var issueForm = new RedmineIssueForm(currentInstance);
-    issueForm.edit(currentIssue, loadIssuesAssignedToMe);
+    var serverId = $(this).attr('data-server-id') * 1;
+    var issueId = $(this).attr('data-issue-id') * 1;
+    var url = this.href + '?serverId=' + serverId + '&issueId=' + issueId;
+    chrome.tabs.create({url: url});
     return false;
 }
 

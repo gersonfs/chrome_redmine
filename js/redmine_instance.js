@@ -250,6 +250,35 @@ var RedmineInstance = function (redmineServer){
         this.request(options);
     };
     
+    this.addWatcher = function (issueId, userId, callbackSuccess){
+        var options = {
+            url: this.getServerUrl() + 'issues/'+ issueId +'/watchers.json',
+            data: 'user_id=' + userId,
+            type: 'POST',
+            dataType : 'html',
+            success: function (){
+                if(typeof(callbackSuccess) != "undefined"){
+                    callbackSuccess();
+                }
+            }
+        };
+        this.request(options);
+    };
+    
+    this.removeWatcher = function (issueId, userId, callbackSuccess){
+        var options = {
+            url: this.getServerUrl() + 'issues/'+ issueId +'/watchers/' + userId + '.json',
+            type: 'DELETE',
+            dataType : 'html',
+            success: function (){
+                if(typeof(callbackSuccess) != "undefined"){
+                    callbackSuccess();
+                }
+            }
+        };
+        this.request(options);
+    };
+    
     this.getRedmineServer = function (){
         return this.redmineServer;
     };

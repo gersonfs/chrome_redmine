@@ -9,10 +9,7 @@ $(function (){
     
     currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
     
-    currentInstance.getIssue(issueId, function (currentIssue){
-        console.log(currentIssue)
-        var issueForm = new RedmineIssueForm(currentInstance);
-        issueForm.edit(currentIssue.issue);
-    });
+    var issueForm = new RedmineIssueForm(currentInstance);
+    issueForm.edit(issueId);
     
 });

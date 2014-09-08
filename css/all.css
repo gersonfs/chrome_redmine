@@ -98,3 +98,12 @@ a.remover{
     display: inline-block;
     cursor: pointer;
 }
+
+div.issue_watcher_user_ids #WatcherUserIds label{
+    font-weight: normal;
+    display: inline-block;
+}
+
+div.issue_watcher_user_ids #WatcherUserIds span{
+    word-wrap: normal;
+}

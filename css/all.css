@@ -107,3 +107,7 @@ div.issue_watcher_user_ids #WatcherUserIds label{
 div.issue_watcher_user_ids #WatcherUserIds span{
     word-wrap: normal;
 }
+
+#TimeEntrySpentOn{
+    width: auto;
+}

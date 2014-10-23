@@ -211,7 +211,7 @@ var RedmineIssueForm = function(redmineInstance) {
                 for(var i in issue.journals){
                     var journal = issue.journals[i];
                     if(typeof(journal.notes) !== 'undefined' && journal.notes.length > 0){
-                        $('#Journals').append('<p><strong>'+ journal.user.name +':</strong> '+ journal.notes +'</p>')
+                        $('#Journals').append('<p><strong>'+ journal.user.name +':</strong> '+ nl2br(journal.notes) +'</p>')
                     }
                 }
             }

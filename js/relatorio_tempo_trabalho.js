@@ -92,13 +92,12 @@ function formatarRelatorioTempo(id, relatorio){
     var html = '';
     var totalHoras = totalHorasPonto = 0;
     for(var i in relatorio){
-        t1 = typeof(relatorio[i]['tempo_trabalho']) === 'undefined' ? 0 : relatorio[i]['tempo_trabalho'];
-        t2 = typeof(relatorio[i]['ponto']) === 'undefined' ? 0 : relatorio[i]['ponto'];
-        t2 *= 1.0;
+        t1 = typeof(relatorio[i]['tempo_trabalho']) === 'undefined' ? 0.0 : relatorio[i]['tempo_trabalho'] * 1.0;
+        t2 = typeof(relatorio[i]['ponto']) === 'undefined' ? 0.0 : relatorio[i]['ponto'] * 1.0;
         data = getStrDataFromDate(i);
         html += '<tr class="'+ getColorRelatorio(t1, t2) +'">';
         html += '<td>'+ data +'</td>';
-        html += '<td>'+ t1 +'</td>';
+        html += '<td>'+ t1.toFixed(1) +'</td>';
         html += '<td>'+ t2.toFixed(1) +'</td>';
         html += '</tr>';
         totalHoras += t1 * 1;
@@ -110,7 +109,10 @@ function formatarRelatorioTempo(id, relatorio){
 }
 
 function getColorRelatorio(tempoTrabalho, tempoPonto){
-    if(tempoTrabalho === 0 || tempoPonto === 0){
+    tempoTrabalho = (tempoTrabalho.toFixed(1)) * 1.0;
+    tempoPonto = (tempoPonto.toFixed(1)) * 1.0;
+    
+    if(tempoTrabalho == 0 || tempoPonto == 0){
         return 'red';
     }
     

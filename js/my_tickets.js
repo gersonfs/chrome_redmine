@@ -56,12 +56,12 @@ function getTabelaTarefas(serverId, issues, caption){
         }
         html +=     '<thead>';
         html +=         '<tr class="colunas">';
-        html +=             '<td style="width: 2%;">Nº</td>';
+        html +=             '<td style="width: 4%;">ID</td>';
         html +=             '<td style="width: 14%;">Projeto</td>';
         html +=             '<td style="width: 8%;">Prioridade</td>';
         html +=             '<td style="width: 8%;">Data início</td>';
         html +=             '<td style="width: 8%;">Data fim</td>';
-        html +=             '<td style="width: 48%;">Titulo</td>';
+        html +=             '<td style="width: 46%;">Titulo</td>';
         html +=             '<td style="width: 7%;">T. Prev.</td>';
         html +=             '<td style="width: 5%;">Opções</td>';
         html +=         '</tr>';
@@ -72,7 +72,7 @@ function getTabelaTarefas(serverId, issues, caption){
             i = i * 1;
             var issue = issues[i];
             html += '<tr data-server-id="'+ serverId +'" data-issue-id="'+ issue.id +'" data-href="edit_issue.html">';
-            html += '<td class="edit">'+ (i+1) +'</td>';
+            html += '<td class="edit">#'+ issue.id +'</td>';
             html += '<td class="edit">'+ issue.project.name +'</td>';
             html += '<td class="edit">'+ issue.priority.name +'</td>';
             html += '<td class="edit">'+ (issue.start_date ? moment(issue.start_date).format('DD/MM/YY') : '') +'</td>';

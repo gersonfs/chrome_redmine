@@ -111,3 +111,41 @@ div.issue_watcher_user_ids #WatcherUserIds span{
 #TimeEntrySpentOn{
     width: auto;
 }
+
+table.formatada thead tr.colunas td{
+    color: #fff;
+    font-weight: bold;
+    background-color: #000;
+}
+
+table.formatada {
+    border-spacing: 0px;
+    border-collapse: separate;
+    width: 95%;
+    margin: 0 auto;
+    table-layout: fixed;
+    border: 1px solid #000;
+}
+
+table.formatada tr td{
+    padding: 2px 5px 2px 5px;
+}
+
+table.formatada tbody tr:nth-child(even) {
+    background: #ddd;
+}
+
+table.formatada caption {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+table.formatada tbody tr:hover td{
+    background: #ccc;
+    cursor: pointer;
+}
+
+#menu{
+    text-align: center;
+    padding-bottom: 10px;
+}

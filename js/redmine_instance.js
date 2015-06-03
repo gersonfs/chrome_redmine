@@ -25,6 +25,17 @@ var RedmineInstance = function (redmineServer){
         this.listAll(onReadyCallback, 'users');
     };
     
+    this.getCurrentUser = function (onReadyCallback){
+        var options = {
+            url: this.getServerUrl() + 'users/current.json',
+            success: function (data){
+                onReadyCallback.bind(this)(data);
+            }
+        };
+        
+        this.request(options);
+    };
+    
     this.listAll = function (onReadyCallback, resource, parameters){
         var fullList = [];
         var defaultParameters = $.extend({offest: 0}, parameters);

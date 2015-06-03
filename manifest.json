@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "OneHost Projects",
-    "version": "0.2.14",
+    "version": "0.2.15",
     "description": "Esta extensão permite integrar o Google Chrome™ com o Redmine",
     "permissions": [
         "http://*/*",
@@ -10,7 +10,10 @@
     ],
     "browser_action": {
         "default_icon": "img/icon.png",
-        "default_popup": "popup.html"
+        "default_title": "OneWeb"
+    },
+    "background": {
+        "scripts" : ["bg.js"]
     },
     "icons": {
         "16": "img/icon48.png",

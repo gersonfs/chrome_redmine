@@ -1,9 +1,24 @@
 $(function (){
     var cr = new ChromeRedmine();
     var serverId = getURLVar('server_id');
+    var issueId = getURLVar('issue_id');
+    var projectId = getURLVar('project_id');
     var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    var globalUser;
+    
+    currentInstance.getCurrentUser(function (user){
+        globalUser = user;
+    });
+    
+    $('#TimeEntryIssueId').val(issueId);
     
     $('#SaveIssue').click(function (){
+        if($('#TimeEntryIssueId').val().length === 0 && globalUser.user.login != 'gerson') {
+            alert('Informe o Id do ticket!');
+            $('#TimeEntryIssueId').focus();
+            return false;
+        }
+        
         $(this).addClass('loading');
         currentInstance.createTimeEntry($('#TimeEntry form').serialize(), function(){
             alert('Entrada adicionada com sucesso!');
@@ -18,6 +33,7 @@ $(function (){
             html += '<option value="' + projects[i].id + '">' + projects[i].name + '</option>';
         }
         $('#TimeEntryProjectId').html(html);
+        $('#TimeEntryProjectId').val(projectId);
         $('label[for="TimeEntryProjectId"]').removeClass('loading');
     });
     

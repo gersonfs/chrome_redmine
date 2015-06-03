@@ -25,13 +25,13 @@ function buscarDadosRelatorio(user_id){
         formatarRelatorioTempo('#EssaSemana', dadosEssaSemana);
         formatarRelatorioTempo('#SemanaPassada', dadosSemanaPassada);
         
-        var esseMes = relatorio.esse_mes.length > 0 ? relatorio.esse_mes[0]['time_entry']['hours'] : 0;
-        var esseMesPonto = relatorio.esse_mes_ponto.length > 0 ? relatorio.esse_mes_ponto[0]['ow_rel_ponto']['hours'] : 0;
+        var esseMes = relatorio.esse_mes.length > 0 ? relatorio.esse_mes[0]['hours'] : 0;
+        var esseMesPonto = relatorio.esse_mes_ponto.length > 0 ? relatorio.esse_mes_ponto[0]['hours'] : 0;
         $('#EsseMes').html(esseMes);
         $('#EsseMesPonto').html(esseMesPonto);
         
-        var mesPassado = relatorio.mes_passado.length > 0 ? relatorio.mes_passado[0]['time_entry']['hours'] : 0;
-        var mesPassadoPonto = relatorio.mes_passado_ponto.length > 0 ? relatorio.mes_passado_ponto[0]['ow_rel_ponto']['hours'] : 0;
+        var mesPassado = relatorio.mes_passado.length > 0 ? relatorio.mes_passado[0]['hours'] : 0;
+        var mesPassadoPonto = relatorio.mes_passado_ponto.length > 0 ? relatorio.mes_passado_ponto[0]['hours'] : 0;
         $('#MesPassado').html(mesPassado);
         $('#MesPassadoPonto').html(mesPassadoPonto);
         
@@ -47,8 +47,8 @@ function formatarSelectUsuarios(usuarios){
     
     var html = '<option value=""></option>';
     for(var i in usuarios){
-        var usuario = usuarios[i].user;
-        html += '<option value="'+ usuario.id +'">'+ usuario.mail +'</option>';
+        var usuario = usuarios[i];
+        html += '<option value="'+ usuario.id +'">'+ usuario.firstname + ' ' + usuario.lastname +'</option>';
     }
     
     $('#Users').html(html);
@@ -59,12 +59,12 @@ function formatarRetornoRelatorio(tempo_trabalho, ponto){
     var datas = [];
     
     for(var i in ponto){
-        var t1 = ponto[i].ow_rel_ponto;
+        var t1 = ponto[i];
         datas.push(t1.date);
     }
     
     for(var i in tempo_trabalho){
-        var t = tempo_trabalho[i].time_entry;
+        var t = tempo_trabalho[i];
         if(datas.lastIndexOf(t.spent_on) === -1){
             datas.push(t.spent_on);
         }
@@ -76,12 +76,12 @@ function formatarRetornoRelatorio(tempo_trabalho, ponto){
     }
     
     for(var i in ponto){
-        var t1 = ponto[i].ow_rel_ponto;
+        var t1 = ponto[i];
         obj[t1.date]['ponto'] = t1.hours;
     }
     
     for(var i in tempo_trabalho){
-        var t2 = tempo_trabalho[i].time_entry;
+        var t2 = tempo_trabalho[i];
         obj[t2.spent_on]['tempo_trabalho'] = t2.hours;
     }
     

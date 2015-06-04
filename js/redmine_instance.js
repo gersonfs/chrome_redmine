@@ -14,11 +14,11 @@ var RedmineInstance = function (redmineServer){
     };
     
     this.getAllOpenIssuesAssignedToMe = function (onReadyCallback){
-        this.listAll(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open'});
+        this.listAll(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open', sort: 'priority:desc'});
     };
     
     this.getAllOpenIssues = function (onReadyCallback){
-        this.listAll(onReadyCallback, 'issues', {status_id: 'open'});
+        this.listAll(onReadyCallback, 'issues', {status_id: 'open', sort: 'priority:desc'});
     };
     
     this.getAllUsers = function (onReadyCallback){

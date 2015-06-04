@@ -121,7 +121,7 @@ table.formatada thead tr.colunas td{
 table.formatada {
     border-spacing: 0px;
     border-collapse: separate;
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
     table-layout: fixed;
     border: 1px solid #000;

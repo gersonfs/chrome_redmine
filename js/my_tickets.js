@@ -59,11 +59,12 @@ function getTabelaTarefas(serverId, issues, caption){
         html +=             '<td style="width: 4%;">ID</td>';
         html +=             '<td style="width: 14%;">Projeto</td>';
         html +=             '<td style="width: 8%;">Prioridade</td>';
-        html +=             '<td style="width: 8%;">Data início</td>';
-        html +=             '<td style="width: 8%;">Data fim</td>';
-        html +=             '<td style="width: 46%;">Titulo</td>';
+        html +=             '<td style="width: 8%;">Status</td>';
+        html +=             '<td style="width: 7%;">Data início</td>';
+        html +=             '<td style="width: 7%;">Data fim</td>';
+        html +=             '<td style="width: 41%;">Titulo</td>';
         html +=             '<td style="width: 7%;">T. Prev.</td>';
-        html +=             '<td style="width: 5%;">Opções</td>';
+        html +=             '<td style="width: 4%;"></td>';
         html +=         '</tr>';
         html +=     '</thead>';
         html +=     '<tbody>';
@@ -75,6 +76,7 @@ function getTabelaTarefas(serverId, issues, caption){
             html += '<td class="edit">#'+ issue.id +'</td>';
             html += '<td class="edit">'+ issue.project.name +'</td>';
             html += '<td class="edit">'+ issue.priority.name +'</td>';
+            html += '<td class="edit">'+ issue.status.name +'</td>'
             html += '<td class="edit">'+ (issue.start_date ? moment(issue.start_date).format('DD/MM/YY') : '') +'</td>';
             html += '<td class="edit">'+ (issue.due_date ? moment(issue.due_date).format('DD/MM/YY') : '') +'</td>';
             html += '<td class="edit">'+ issue.subject +'</td>';

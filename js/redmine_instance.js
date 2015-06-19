@@ -75,7 +75,7 @@ var RedmineInstance = function (redmineServer){
             }
         };
         
-        this.request(options);
+        return this.request(options);
     };
     
     this.request = function (options){
@@ -88,7 +88,7 @@ var RedmineInstance = function (redmineServer){
             }
         };
         
-        $.ajax($.extend(defaultOptions, options));
+        return $.ajax($.extend(defaultOptions, options));
     };
     
     this.getProjectMemberships = function (project_id, onReadyCallback){
@@ -101,19 +101,19 @@ var RedmineInstance = function (redmineServer){
     };
     
     this.getIssueStatuses = function (onReadyCallback){
-        this.list(onReadyCallback, 'issue_statuses');
+        return this.list(onReadyCallback, 'issue_statuses');
     };
     
     this.getTimeEntryActivities = function (onReadyCallback){
-        this.list(onReadyCallback, 'enumerations/time_entry_activities');
+        return this.list(onReadyCallback, 'enumerations/time_entry_activities');
     };
     
     this.getIssuePriorities = function (onReadyCallback){
-        this.list(onReadyCallback, 'enumerations/issue_priorities');
+        return this.list(onReadyCallback, 'enumerations/issue_priorities');
     };
     
     this.getProjectIssueCategories = function (project_id, onReadyCallback){
-        this.list(onReadyCallback, 'projects/'+ project_id +'/issue_categories');
+        return this.list(onReadyCallback, 'projects/'+ project_id +'/issue_categories');
     };
     
     this.getIssue = function (issue_id, onReadyCallback, include){
@@ -131,7 +131,7 @@ var RedmineInstance = function (redmineServer){
     };
     
     this.updateIssue = function (issue_id, data, onReadyCallback){
-        this.request({
+        return this.request({
             url: this.getServerUrl() + 'issues/' + issue_id + '.json',
             type: 'PUT',
             data: data,

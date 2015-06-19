@@ -160,6 +160,7 @@ var RedmineIssueForm = function(redmineInstance) {
         $('#IssueSubject').val(issue.subject);
         $('#IssueDescription').val(issue.description);
         $('#IssueStartDate').val(issue.start_date);
+        $('#IssueDoneRatio').val(issue.done_ratio);
         $('#IssueEstimatedHours').val(issue.estimated_hours);
         if(typeof(issue.assigned_to) !== 'undefined'){
             $('#IssueAssignedToId').html('<option value="'+ issue.assigned_to.id +'">'+ issue.assigned_to.name +'</option>');

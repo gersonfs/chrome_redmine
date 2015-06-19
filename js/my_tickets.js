@@ -23,15 +23,9 @@ function loadIssuesAssignedToMe() {
 
     var ri = new RedmineInstance(server);
 
-    var ajax1 = ri.getIssueStatuses(function (dados) {
+    ri.getIssueStatuses(function (dados) {
         this.issueStatuses = dados.issue_statuses;
     });
-
-    $.when(ajax1).done((function (instanciaRedmine) {
-        return function (dados1) {
-            setarEventoCliqueDireito(instanciaRedmine);
-        };
-    })(ri));
 
     ri.getAllOpenIssuesAssignedToMe(function (serverIssues) {
 
@@ -52,6 +46,7 @@ function loadIssuesAssignedToMe() {
         html = getTabelaTarefas(this.redmineServer.getId(), serverIssues);
         $('#main').html(html);
         setarEventoCliqueTicket();
+        setarEventoCliqueDireito(ri);
         //totalIssues += serverIssues.length;
         //chrome.browserAction.setBadgeText({text: totalIssues + ''});
     });
@@ -155,11 +150,16 @@ function getTabelaTarefas(serverId, issues, caption) {
     for (i in issues) {
         i = i * 1;
         var issue = issues[i];
+        var done_html = '';
+        if(issue.done_ratio > 0) {
+            done_html = ' ('+ issue.done_ratio +'%)';
+        }
+        
         html += '<tr data-server-id="' + serverId + '" data-issue-id="' + issue.id + '" data-href="edit_issue.html">';
         html += '<td class="edit">#' + issue.id + '</td>';
         html += '<td class="edit">' + issue.project.name + '</td>';
         html += '<td class="edit">' + issue.priority.name + '</td>';
-        html += '<td class="edit">' + issue.status.name + ' ('+ issue.done_ratio +'%)' + '</td>'
+        html += '<td class="edit">' + issue.status.name + done_html + '</td>'
         html += '<td class="edit">' + (issue.start_date ? moment(issue.start_date).format('DD/MM/YY') : '') + '</td>';
         html += '<td class="edit">' + (issue.due_date ? moment(issue.due_date).format('DD/MM/YY') : '') + '</td>';
         html += '<td class="edit">' + issue.subject + '</td>';
@@ -180,6 +180,10 @@ function listIssuesPerUser() {
 
     $('#main').html('<div class="loading"></div>');
 
+    currentInstance.getIssueStatuses(function (dados) {
+        this.issueStatuses = dados.issue_statuses;
+    });
+    
     currentInstance.getAllUsers(function (users) {
         currentInstance.getAllOpenIssues(function (issues) {
             globalIssues[currentInstance.redmineServer.getId()] = issues;
@@ -195,7 +199,7 @@ function listIssuesPerUser() {
             html += getTabelaTarefas(this.redmineServer.getId(), unassignedIssues, 'Sem usuário');
             $('#main').html(html);
             setarEventoCliqueTicket();
-            setarEventoCliqueDireito();
+            setarEventoCliqueDireito(currentInstance);
         });
     });
 

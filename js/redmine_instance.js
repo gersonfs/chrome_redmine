@@ -1,5 +1,6 @@
 var RedmineInstance = function (redmineServer){
     this.redmineServer = redmineServer;
+    this.issueStatuses = [];
     
     this.getAllProjects = function (onReadyCallback, parameters){
         this.listAll(onReadyCallback, 'projects', parameters);

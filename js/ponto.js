@@ -32,6 +32,7 @@ $(function (){
         $(this).addClass('loading');
         currentInstance.abrirPonto(function(retorno){
             if(retorno){
+                cr.setPontoAberto();
                 alert('OK!');
             }else{
                 alert('Não foi possível abrir o ponto!');
@@ -44,6 +45,7 @@ $(function (){
         $(this).addClass('loading');
         currentInstance.fecharPonto(function(retorno){
             if(retorno){
+                cr.setPontoFechado();
                 alert('OK!');
             }else{
                 alert('Não foi possível fechar o ponto!');

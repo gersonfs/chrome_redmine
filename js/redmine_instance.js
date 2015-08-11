@@ -190,6 +190,22 @@ var RedmineInstance = function (redmineServer){
         });
     };
     
+    this.isPontoAberto = function (callback){
+        this.request({
+            url: this.getServerUrl() + 'ow_pontos/ponto_aberto.json',
+            type: 'POST',
+            dataType: 'json',
+            success: function (retorno){
+                callback.bind(this)(retorno);
+            },
+            error: function (a, b, c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+            }
+        });
+    };
+    
     this.fecharPonto = function (callback){
         this.request({
             url: this.getServerUrl() + 'ow_pontos/fechar.json',

@@ -52,4 +52,15 @@ var ChromeRedmine = function (){
         servers.splice(index, 1);
         this.saveServers(servers);
     };
+    
+    this.setPontoAberto = function () {
+        chrome.browserAction.setTitle({title: 'OneWeb - Ponto Aberto'});
+        chrome.browserAction.setIcon({path: 'img/icon_green.png'});
+    };
+    
+    this.setPontoFechado = function () {
+        chrome.browserAction.setTitle({title: 'OneWeb - Ponto Fechado'});
+        chrome.browserAction.setIcon({path: 'img/icon.png'});
+    };
+    
 };

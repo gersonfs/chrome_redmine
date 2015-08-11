@@ -55,12 +55,12 @@ var ChromeRedmine = function (){
     
     this.setPontoAberto = function () {
         chrome.browserAction.setTitle({title: 'OneWeb - Ponto Aberto'});
-        chrome.browserAction.setIcon({path: 'img/icon_green.png'});
+        chrome.browserAction.setIcon({path: '/img/icon_green.png?t=' + (new Date().getTime())});
     };
     
     this.setPontoFechado = function () {
         chrome.browserAction.setTitle({title: 'OneWeb - Ponto Fechado'});
-        chrome.browserAction.setIcon({path: 'img/icon.png'});
+        chrome.browserAction.setIcon({path: '/img/icon.png?t=' + (new Date().getTime())});
     };
     
 };

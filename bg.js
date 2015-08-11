@@ -2,7 +2,7 @@
     chrome.tabs.create({ url: 'home.html' });
 });
 
-setInterval(function (){
+function verificarPonto() {
     var cr = new ChromeRedmine();
     var servers = cr.getRedmineServers();
     if(servers.length === 0) {
@@ -17,5 +17,10 @@ setInterval(function (){
             cr.setPontoFechado();
         }
     });
-    
-}, 15 * 60 * 1000);
+}
+
+setInterval(function (){
+    verificarPonto();
+}, 10 * 60 * 1000);
+
+verificarPonto();

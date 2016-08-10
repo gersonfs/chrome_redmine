@@ -31,6 +31,12 @@ $(function (){
     $('#AbrirPonto').click(function (){
         $(this).addClass('loading');
         currentInstance.abrirPonto(function(retorno){
+            if(retorno && retorno.erro) {
+                alert('O ponto NÃO foi aberto! ' + retorno.msg);
+                $('#AbrirPonto').removeClass('loading');
+                return;
+            }
+            
             if(retorno){
                 cr.setPontoAberto();
                 alert('OK!');

@@ -3,6 +3,7 @@ var RedmineIssueForm = function(redmineInstance) {
     this.files = [];
     this.issue = null;
     this.isEditing = false;
+    this.projects = [];
     
     this.loadProjectMemberships = function(projectId, defaultValue, wattchers) {
         if(typeof(wattchers) == "undefined"){
@@ -140,7 +141,9 @@ var RedmineIssueForm = function(redmineInstance) {
 
     this.loadProjects = function(defaultValue) {
         $('label[for="IssueProjectId"]').addClass('loading');
+        var self = this;
         this.redmineInstance.getAllProjects(function(projects) {
+            self.projects = projects;
             var html = '<option value="">Select a project</option>';
             for (var i in projects) {
                 html += '<option value="' + projects[i].id + '">' + projects[i].name + '</option>';

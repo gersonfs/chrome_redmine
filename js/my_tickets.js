@@ -7,7 +7,13 @@ var cr;
 
 $(function () {
     cr = new ChromeRedmine();
-    loadIssuesAssignedToMe();
+    currentInstance = new RedmineInstance();
+    if(window.location.href.match(/listar_tarefas\.html$/)){
+        listIssuesPerUser();
+    }else{
+        loadIssuesAssignedToMe()
+    }
+    
 });
 
 function loadIssuesAssignedToMe() {
@@ -18,10 +24,8 @@ function loadIssuesAssignedToMe() {
         $('#main').html('<div class="alert error">Não há servidores redmine configurados</div>');
         return;
     }
-    //vou tratar so 1 por enquanto
-    var server = servers[0];
 
-    var ri = new RedmineInstance(server);
+    var ri = new RedmineInstance();
 
     ri.getIssueStatuses(function (dados) {
         this.issueStatuses = dados.issue_statuses;
@@ -29,21 +33,9 @@ function loadIssuesAssignedToMe() {
 
     ri.getAllOpenIssuesAssignedToMe(function (serverIssues) {
 
-        globalIssues[this.redmineServer.getId()] = serverIssues;
+        globalIssues = serverIssues;
 
-        var menu = '<h1>' + this.redmineServer.name + '</h1>';
-        menu += '<a href="new_issue.html?server_id=' + this.redmineServer.getId() + '" class="new_issue">Nova Tarefa</a> - ';
-        menu += '<a href="home.html">Minhas Tarefas</a> - ';
-        menu += '<a data-server-id="' + this.redmineServer.getId() + '" href="" class="list">Listar Tarefas</a>';
-        menu += ' - <a href="time_entry.html?server_id=' + this.redmineServer.getId() + '" class="list">Tempo Trab.</a>';
-        menu += ' - <a href="ponto.html?server_id=' + this.redmineServer.getId() + '" class="list">Ponto</a>';
-        menu += ' - <a href="relatorio_tempo_trabalho.html?server_id=' + this.redmineServer.getId() + '" class="list">Rel t.Trab.</a>';
-
-        $('#menu').html(menu);
-        $('#menu a.new_issue').click(newIssue);
-        $('#menu a.list').click(listIssuesPerUser);
-
-        html = getTabelaTarefas(this.redmineServer.getId(), serverIssues);
+        html = getTabelaTarefas(serverIssues);
         $('#main').html(html);
         setarEventoCliqueTicket();
         setarEventoCliqueDireito(ri);
@@ -65,35 +57,35 @@ function setarEventoCliqueDireito(instanciaRedmine) {
         var status = instanciaRedmine.issueStatuses[i];
         statuses['status-' + status.id] = {"name": status.name};
     }
-    
-    var callback = (function (instancia){
-        return function (key, options){
+
+    var callback = (function (instancia) {
+        return function (key, options) {
             //console.log(key);
             //console.log(options.$trigger);
             var issue_id = $(options.$trigger).data('issue-id');
-            
-            if(key.match(/^status\-/)) {
+
+            if (key.match(/^status\-/)) {
                 var status_id = key.replace('status-', '');
                 var dados = {issue: {status_id: status_id}};
-                instancia.updateIssue(issue_id, dados, function (){
+                instancia.updateIssue(issue_id, dados, function () {
                     loadIssuesAssignedToMe();
                 });
             }
-            
-            if(key.match(/^concluido\-/)) {
+
+            if (key.match(/^concluido\-/)) {
                 var done_ratio = key.replace('concluido-', '');
                 var dados = {issue: {done_ratio: done_ratio}};
-                instancia.updateIssue(issue_id, dados, function (){
+                instancia.updateIssue(issue_id, dados, function () {
                     loadIssuesAssignedToMe();
                 });
             }
-            
-            if(key == 'quit') {
+
+            if (key == 'quit') {
                 $(options.$trigger).contextMenu("hide");
             }
         };
     })(instanciaRedmine);
-    
+
     $.contextMenu({
         selector: 'table.tarefas tbody tr',
         callback: callback,
@@ -126,7 +118,7 @@ function setarEventoCliqueDireito(instanciaRedmine) {
     });
 }
 
-function getTabelaTarefas(serverId, issues, caption) {
+function getTabelaTarefas(issues, caption) {
     var html = '';
     html += '<table class="formatada tarefas">';
     if (caption) {
@@ -151,11 +143,11 @@ function getTabelaTarefas(serverId, issues, caption) {
         i = i * 1;
         var issue = issues[i];
         var done_html = '';
-        if(issue.done_ratio > 0) {
-            done_html = ' ('+ issue.done_ratio +'%)';
+        if (issue.done_ratio > 0) {
+            done_html = ' (' + issue.done_ratio + '%)';
         }
-        
-        html += '<tr data-server-id="' + serverId + '" data-issue-id="' + issue.id + '" data-href="edit_issue.html">';
+
+        html += '<tr data-issue-id="' + issue.id + '" data-href="edit_issue.html">';
         html += '<td class="edit">#' + issue.id + '</td>';
         html += '<td class="edit">' + issue.project.name + '</td>';
         html += '<td class="edit">' + issue.priority.name + '</td>';
@@ -164,7 +156,7 @@ function getTabelaTarefas(serverId, issues, caption) {
         html += '<td class="edit">' + (issue.due_date ? moment(issue.due_date).format('DD/MM/YY') : '') + '</td>';
         html += '<td class="edit">' + issue.subject + '</td>';
         html += '<td class="edit">' + (issue.estimated_hours ? issue.estimated_hours : '') + '</td>';
-        html += '<td><a href="time_entry.html?server_id=' + serverId + '&project_id=' + issue.project.id + '&issue_id=' + issue.id + '">T.T.</a></td>';
+        html += '<td><a href="time_entry.html?project_id=' + issue.project.id + '&issue_id=' + issue.id + '">T.T.</a></td>';
         html += '</tr>';
     }
     html += '</tbody>';
@@ -175,28 +167,26 @@ function getTabelaTarefas(serverId, issues, caption) {
 
 function listIssuesPerUser() {
     globalIssues = [];
-    var serverId = $(this).data('server-id') * 1;
-    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
 
     $('#main').html('<div class="loading"></div>');
 
     currentInstance.getIssueStatuses(function (dados) {
         this.issueStatuses = dados.issue_statuses;
     });
-    
+
     currentInstance.getAllUsers(function (users) {
         currentInstance.getAllOpenIssues(function (issues) {
-            globalIssues[currentInstance.redmineServer.getId()] = issues;
+            globalIssues = issues;
             var html = '';
             for (i in users) {
                 var user = users[i];
                 userIssues = getUserIssues(user, issues);
-                html += getTabelaTarefas(this.redmineServer.getId(), userIssues, user.firstname + ' ' + user.lastname);
+                html += getTabelaTarefas(userIssues, user.firstname + ' ' + user.lastname);
                 html += '<br /><br />';
             }
 
             var unassignedIssues = getUnassignedIssues(issues);
-            html += getTabelaTarefas(this.redmineServer.getId(), unassignedIssues, 'Sem usuário');
+            html += getTabelaTarefas(unassignedIssues, 'Sem usuário');
             $('#main').html(html);
             setarEventoCliqueTicket();
             setarEventoCliqueDireito(currentInstance);
@@ -232,25 +222,18 @@ function getUnassignedIssues(issues) {
     return issueList;
 }
 
-function newIssue() {
-    chrome.tabs.create({url: this.href});
-    return false;
-}
-
 function editIssue() {
-    var serverId = $(this).parent().attr('data-server-id') * 1;
     var issueId = $(this).parent().attr('data-issue-id') * 1;
-    var url = $(this).parent().attr('data-href') + '?serverId=' + serverId + '&issueId=' + issueId;
+    var url = $(this).parent().attr('data-href') + '?issueId=' + issueId;
     //window.href = url;
     chrome.tabs.create({url: url});
     return false;
 }
 
-function getIssue(serverId, issueId) {
-    var serverIssues = globalIssues[serverId];
-    for (var i in serverIssues) {
-        if (serverIssues[i].id == issueId) {
-            return serverIssues[i];
+function getIssue(issueId) {
+    for (var i in globalIssues) {
+        if (globalIssues[i].id == issueId) {
+            return globalIssues[i];
         }
     }
     return null;

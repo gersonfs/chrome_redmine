@@ -1,6 +1,4 @@
-var cr = new ChromeRedmine();
-var serverId = getURLVar('server_id');
-var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+var currentInstance = new RedmineInstance();
     
 $(function (){
     $('#Users').change(function (){

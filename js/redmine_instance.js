@@ -1,5 +1,4 @@
-var RedmineInstance = function (redmineServer){
-    this.redmineServer = redmineServer;
+var RedmineInstance = function (){
     this.issueStatuses = [];
     
     this.getAllProjects = function (onReadyCallback, parameters){
@@ -156,6 +155,12 @@ var RedmineInstance = function (redmineServer){
                 onReadyCallback.bind(this)();
             },
             error: function (a, b, c){
+                var retorno = JSON.parse(a.responseText)
+                if(retorno && retorno.errors && retorno.errors.length > 0) {
+                    alert(retorno.errors[0]);
+                    return;
+                }
+                
                 alert("Erro ao salvar o ticket");
             }
         });
@@ -308,19 +313,21 @@ var RedmineInstance = function (redmineServer){
     };
     
     this.getRedmineServer = function (){
-        return this.redmineServer;
+        var cr = new ChromeRedmine();
+        var servers = cr.getRedmineServers();
+        return servers[0];
     };
     
     this.getServerId = function (){
-        return this.redmineServer.getId();
+        return this.getRedmineServer().getId();
     };
     
     this.getServerUrl = function (){
-        return this.redmineServer.getUrl();
+        return this.getRedmineServer().getUrl();
     };
     
     this.getUserApiKey = function (){
-        return this.redmineServer.getUserKey();
+        return this.getRedmineServer().getUserKey();
     };
     
 };

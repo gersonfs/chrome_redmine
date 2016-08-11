@@ -1,9 +1,7 @@
 $(function (){
-    var cr = new ChromeRedmine();
-    var serverId = getURLVar('server_id');
     var issueId = getURLVar('issue_id');
     var projectId = getURLVar('project_id');
-    var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    var currentInstance = new RedmineInstance();
     var globalUser;
     
     currentInstance.getCurrentUser(function (user){

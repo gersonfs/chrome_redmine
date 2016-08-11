@@ -1,14 +1,9 @@
-var cr = serverId = issueId = currentInstance = issueForm = null;
+var cr = issueId = issueForm = null;
   
 $(function (){
-    
     cr = new ChromeRedmine();
-    
-    var serverId = getURLVar('serverId');
     var issueId = getURLVar('issueId');
-    
-    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
-    
+    currentInstance = new RedmineInstance();
     var issueForm = new RedmineIssueForm(currentInstance);
     issueForm.edit(issueId);
     

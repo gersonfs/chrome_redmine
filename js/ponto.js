@@ -1,7 +1,6 @@
 $(function (){
     var cr = new ChromeRedmine();
-    var serverId = getURLVar('server_id');
-    var currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    var currentInstance = new RedmineInstance();
     
     currentInstance.getPontos(function (pontos){
         var html = '';
@@ -31,7 +30,7 @@ $(function (){
     $('#AbrirPonto').click(function (){
         $(this).addClass('loading');
         currentInstance.abrirPonto(function(retorno){
-            if(retorno && retorno.erro) {
+            if(retorno && retorno.erro != 0) {
                 alert('O ponto NÃO foi aberto! ' + retorno.msg);
                 $('#AbrirPonto').removeClass('loading');
                 return;
@@ -39,7 +38,7 @@ $(function (){
             
             if(retorno){
                 cr.setPontoAberto();
-                alert('OK!');
+                alert(retorno.msg);
             }else{
                 alert('Não foi possível abrir o ponto!');
             }
@@ -50,9 +49,15 @@ $(function (){
     $('#FecharPonto').click(function (){
         $(this).addClass('loading');
         currentInstance.fecharPonto(function(retorno){
+            if(retorno && retorno.erro != 0) {
+                alert('O ponto NÃO foi fechado! ' + retorno.msg);
+                $('#FecharPonto').removeClass('loading');
+                return;
+            }
+            
             if(retorno){
                 cr.setPontoFechado();
-                alert('OK!');
+                alert(retorno.msg);
             }else{
                 alert('Não foi possível fechar o ponto!');
             }

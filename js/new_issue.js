@@ -1,9 +1,7 @@
-var cr = serverId = currentInstance = issueForm = null;
+var currentInstance = issueForm = null;
 
 $(function (){
-    cr = new ChromeRedmine();
-    serverId = getURLVar('server_id');
-    currentInstance = new RedmineInstance(cr.getRedmineServer(serverId));
+    currentInstance = new RedmineInstance();
     
     issueForm = new RedmineIssueForm(currentInstance);
     issueForm.adicionarEventoArquivos();
@@ -11,10 +9,7 @@ $(function (){
     $('#SaveIssue').click(function (){
         $(this).addClass('loading');
         currentInstance.createIssue($('#Issue').serialize(), function (){
-            chrome.tabs.getCurrent(function(tab) {
-                chrome.tabs.remove(tab.id, function() { });
-            });
-
+            window.location.href = 'home.html';
         });
     });
 

@@ -100,6 +100,10 @@ var RedmineInstance = function (){
         this.list(onReadyCallback, 'trackers');
     };
     
+    this.getTimeEntries = function (onReadyCallback, params){
+        this.list(onReadyCallback, 'time_entries', params);
+    };
+    
     this.getIssueStatuses = function (onReadyCallback){
         return this.list(onReadyCallback, 'issue_statuses');
     };

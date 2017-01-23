@@ -244,9 +244,9 @@ var RedmineInstance = function (){
     };
     
     this.getRelatorioTempoTrabalho = function(callback, user_id){
-        var url = this.getServerUrl() + 'ow_util/tempo_trabalho.json';
+        var url = this.getServerUrl() + 'ow_util/tempo_trabalho.json?abonado=0';
         if(typeof(user_id) !== 'undefined'){
-            url += '?user_id=' + user_id;
+            url += '&user_id=' + user_id;
         }
         
         var options = {

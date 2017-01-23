@@ -6,13 +6,12 @@ module.exports = function (grunt) {
             main: {
                 options: {
                     archive: function () {
-                        return (new Date()).getTime() + '.zip';
+                        return 'dist/' + (new Date()).getTime() + '.zip';
                     },
                     pretty: true
                 },
                 expand: true,
                 src: ['**/*', '!node_modules/**', '!nbproject/**'],
-                dest: '/'
             }
         }
     });

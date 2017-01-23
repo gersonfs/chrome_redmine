@@ -11,7 +11,7 @@ module.exports = function (grunt) {
                     pretty: true
                 },
                 expand: true,
-                src: ['**/*', '!node_modules/**', '!nbproject/**'],
+                src: ['**/*', '!node_modules/**', '!nbproject/**', '!dist/**'],
             }
         }
     });

@@ -139,7 +139,7 @@ var RedmineIssueForm = function(redmineInstance) {
         });
     };
 
-    this.loadProjects = function(defaultValue) {
+    this.loadProjects = function(defaultValue, doneCallback) {
         $('label[for="IssueProjectId"]').addClass('loading');
         var self = this;
         this.redmineInstance.getAllProjects(function(projects) {
@@ -153,6 +153,10 @@ var RedmineIssueForm = function(redmineInstance) {
 
             if (typeof (defaultValue) !== 'undefined') {
                 $('#IssueProjectId').val(defaultValue);
+            }
+            
+            if(typeof(doneCallback) !== 'undefined') {
+                doneCallback();
             }
         });
     };

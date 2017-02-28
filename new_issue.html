@@ -19,6 +19,9 @@
         <form id="Issue" enctype="multipart/form-data">
             <div class="input select issue_project_id">
                 <label for="IssueProjectId">Project</label>
+                <input list="projetos" id="ProjectsList" />
+                
+                <datalist id="projetos"></datalist>
                 <select name="issue[project_id]" id="IssueProjectId"></select>
             </div>
 

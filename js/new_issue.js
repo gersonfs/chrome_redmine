@@ -36,7 +36,7 @@ $(function (){
         });
     };
     issueForm.loadProjects(null, doneCallback);
-    issueForm.loadTrackers();
+    issueForm.loadTrackers(5);
     issueForm.loadIssueStatuses();
     issueForm.loadIssuePriorities();
 

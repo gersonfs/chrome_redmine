@@ -162,7 +162,7 @@ var RedmineIssueForm = function(redmineInstance) {
     };
     
     this.setDefaultValues = function(issue){
-        $('#Issue h1').html(issue.project.name);
+        $('#Issue h1').html(issue.project.name + ' - Autor: ' + issue.author.name);
         $('#IssueProjectId').val(issue.project.id);
         $('#IssueSubject').val(issue.subject);
         $('#IssueDescription').val(issue.description);

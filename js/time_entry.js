@@ -10,6 +10,21 @@ $(function (){
     
     $('#TimeEntryIssueId').val(issueId);
     
+    $('#ProjectsList').bind('input', function (){
+        var found = $('#projetos option[value="'+ $(this).val() +'"]');
+        if(found.length === 0) {
+            return true;
+        }
+        
+        $('#TimeEntryProjectId').val(found.attr('data-id'));
+        $('#TimeEntryProjectId').change();
+    });
+    
+    $('#TimeEntryProjectId').on('change', function (){
+        $('#TimeEntryActivityId').val(12);
+        $('#TimeEntryHours').focus();
+    });
+    
     $('#SaveIssue').click(function (){
         if($('#TimeEntryIssueId').val().length === 0 && globalUser.user.login != 'gerson') {
             alert('Informe o Id do ticket!');
@@ -28,7 +43,10 @@ $(function (){
     currentInstance.getAllProjects(function(projects) {
         var html = '<option value="">Select a project</option>';
         for (var i in projects) {
-            html += '<option value="' + projects[i].id + '">' + projects[i].name + '</option>';
+            var nome = projects[i].name;
+            var id = projects[i].id;
+            html += '<option value="' + id + '">' + nome + '</option>';
+            $('#projetos').append('<option value="'+ nome +'" data-id="'+ id +'">');
         }
         $('#TimeEntryProjectId').html(html);
         $('#TimeEntryProjectId').val(projectId);

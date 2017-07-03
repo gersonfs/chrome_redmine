@@ -21,6 +21,9 @@
         "128": "img/icon128.png"
     },
     "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html"
+    },
     "author": "Gerson Felipe Schwinn <gersonfs@gmail.com>",
     "homepage_url": "https://github.com/gersonfs"
 }

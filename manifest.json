@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "OneHost Projects",
-    "version": "0.3.10",
+    "version": "0.3.11",
     "description": "Esta extensão permite integrar o Google Chrome™ com o Redmine",
     "permissions": [
         "http://*/*",
@@ -25,5 +25,10 @@
         "page": "options.html"
     },
     "author": "Gerson Felipe Schwinn <gersonfs@gmail.com>",
-    "homepage_url": "https://github.com/gersonfs"
+    "homepage_url": "https://github.com/gersonfs",
+    "applications": {
+        "gecko": {
+            "id": "chrome_redmine@onehost.com.br"
+        }
+    }
 }

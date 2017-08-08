@@ -48,6 +48,7 @@ $(function (){
 
         $('#NewIssueFields').show();
         issueForm.loadProjectMemberships($(this).val());
+        issueForm.loadHorasManutencao($(this).val());
     });
     
 });

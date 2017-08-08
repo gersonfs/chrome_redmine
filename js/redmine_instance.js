@@ -8,6 +8,40 @@ var RedmineInstance = function (){
     this.getProjects = function (onReadyCallback, parameters){
         this.list(onReadyCallback, 'projects', parameters);
     };
+
+    this.getProject = function (onReadyCallback, project_id, include){
+        var url = this.getServerUrl() + 'projects/' + project_id + '.json';
+        if(typeof(include) !== 'undefined'){
+            url += '?include=' + include;
+        }
+        
+        this.request({
+            url: url,
+            success: function (data){
+                onReadyCallback.bind(this)(data);
+            }
+        });
+    };
+
+    this.getProjectHorasManutencao = function (onReadyCallback, project_id, include){
+        var self = this;
+        this.getProject(function (projeto){
+            onReadyCallback(self.getHorasManutencao(projeto));
+        }, project_id);
+    };
+
+    this.getHorasManutencao = function (projeto) {
+        for(var i in projeto.project.custom_fields) {
+            var customField = projeto.project.custom_fields[i];
+            if(customField.name.match(/^Horas Manuten/)) {
+                if(customField.value.length > 0){
+                    return customField.value * 1.0;
+                }
+                return null;
+            }
+        }
+        return null;
+    };
     
     this.getOpenIssuesAssignedToMe = function (onReadyCallback){
         this.list(onReadyCallback, 'issues', {assigned_to_id: 'me', status_id: 'open'});

@@ -16,7 +16,8 @@
     <body>
 
         <form id="Issue" enctype="multipart/form-data">
-            <h1></h1>
+            <h1 style="display: inline-block;"></h1> - <label>Horas Manutenção: <span id="HorasManutencao"></span></label>
+            <br />
             <input type="hidden" name="issue[project_id]" id="IssueProjectId" />
 
             <div class="input select issue_tracker_id float">
@@ -29,10 +30,12 @@
                 <select name="issue[status_id]" id="IssueStatusId"></select>
             </div>
 
-            <div class="input select issue_priority_id">
+            <div class="input select issue_priority_id float">
                 <label for="IssuePriorityId">Priority</label>
                 <select name="issue[priority_id]" id="IssuePriorityId"></select>
             </div>
+            
+            <div class="clear"></div>
 
             <div class="input select issue_subject">
                 <label for="IssueSubject">Subject</label>

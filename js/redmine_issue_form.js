@@ -177,6 +177,15 @@ var RedmineIssueForm = function(redmineInstance) {
         $('#IssuePriorityId').html('<option value="'+ issue.priority.id +'">'+ issue.priority.name +'</option>');
         $('#TimeEntryIssueId').val(issue.id);
     };
+
+    this.loadHorasManutencao = function (projectId) {
+        this.redmineInstance.getProjectHorasManutencao(function (horas) {
+            if(horas === null) {
+                horas = "Não definido!";
+            }
+            $('#HorasManutencao').html(horas);
+        }, projectId)
+    };
     
     this.edit = function (issueId){
         this.isEditing = true;
@@ -214,6 +223,7 @@ var RedmineIssueForm = function(redmineInstance) {
             self.loadTrackers(issue.tracker.id);
             self.loadIssueStatuses(issue.status.id);
             self.loadIssuePriorities(issue.priority.id);
+            self.loadHorasManutencao(issue.project.id);
         
             if(typeof(issue.journals) !== 'undefined'){
                 for(var i in issue.journals){

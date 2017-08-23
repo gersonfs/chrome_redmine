@@ -8,6 +8,11 @@ Esta extensão permite executar ações básicas do redmine através do google c
 - Ver relatório de horas trabalhadas
 - Abrir e fechar o ponto de trabalho
 
+## Publicação de alterações
+* Incrementar o número da versão no arquivo manifest.json
+* Gerar o arquivo zipado com o conteúdo da extensão usando o comando ``grunt compress``
+* O arquivo será gerado na pasta ``dist/``
+* Fazer upload aqui: [Chrome Web Store](https://chrome.google.com/webstore/developer/dashboard)
 
 ## Instalação
 

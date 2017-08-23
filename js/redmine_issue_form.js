@@ -26,18 +26,22 @@ var RedmineIssueForm = function(redmineInstance) {
         for (var i in memberships) {
             var member = memberships[i];
 
+            
+
             if (typeof (member.user) != 'undefined') {
                 html += '<option value="' + member.user.id + '">' + member.user.name + '</option>';
             }
 
-            if (typeof (member.group) != 'undefined') {
+            /*if (typeof (member.group) != 'undefined') {
                 html += '<option value="' + member.group.id + '">' + member.group.name + '</option>';
-            }
+            }*/
 
-            wattchers += '<span>';
-            wattchers +=    '<input type="checkbox" name="issue[watcher_user_ids][]" id="WatcherUser'+ member.user.id +'" value="'+ member.user.id +'" />';
-            wattchers +=    '<label for="WatcherUser'+ member.user.id +'">'+ member.user.name +'</label>';
-            wattchers += '</span>';
+            if(typeof(member.user) != "undefined") {
+                wattchers += '<span>';
+                wattchers +=    '<input type="checkbox" name="issue[watcher_user_ids][]" id="WatcherUser'+ member.user.id +'" value="'+ member.user.id +'" />';
+                wattchers +=    '<label for="WatcherUser'+ member.user.id +'">'+ member.user.name +'</label>';
+                wattchers += '</span>';
+            }
         }
         $('#IssueAssignedToId').html(html);
         $('label[for="IssueAssignedToId"]').removeClass('loading');

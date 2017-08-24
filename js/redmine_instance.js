@@ -214,7 +214,14 @@ var RedmineInstance = function (){
                 onReadyCallback.bind(this)();
             },
             error: function (a, b, c){
-                alert("Erro ao criar uma entrada de tempo");
+                var resposta = JSON.parse(a.responseText);
+                var msg = "";
+                if(resposta && resposta.errors) {
+                    resposta.errors.forEach(function (valor) {
+                        msg += valor;
+                    });
+                }
+                alert("Erro ao criar uma entrada de tempo. " + msg);
             }
         });
     };

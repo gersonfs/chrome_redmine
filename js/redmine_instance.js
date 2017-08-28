@@ -178,6 +178,12 @@ var RedmineInstance = function (){
                 onReadyCallback.bind(this)();
             },
             error: function (a, b, c){
+                var retorno = JSON.parse(a.responseText)
+                if(retorno && retorno.errors && retorno.errors.length > 0) {
+                    alert(retorno.errors[0]);
+                    return;
+                }
+                
                 alert("Erro ao salvar o ticket");
             }
         });

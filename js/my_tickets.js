@@ -178,15 +178,33 @@ function listIssuesPerUser() {
         currentInstance.getAllOpenIssues(function (issues) {
             globalIssues = issues;
             var html = '';
+            usuariosSemTarefa = [];
             for (i in users) {
                 var user = users[i];
+                //Id do usuário Vitor, nao precisa aparecer aqui
+                if(user.id === 19) {
+                    continue;
+                }
                 userIssues = getUserIssues(user, issues);
+                if( userIssues.length === 0 ) {
+                    usuariosSemTarefa.push(user);
+                    continue;
+                }
                 html += getTabelaTarefas(userIssues, user.firstname + ' ' + user.lastname);
                 html += '<br /><br />';
             }
 
             var unassignedIssues = getUnassignedIssues(issues);
             html += getTabelaTarefas(unassignedIssues, 'Sem usuário');
+            
+            nomes = usuariosSemTarefa.map((user) => {
+                return user.firstname + ' ' + user.lastname;
+            });
+            
+            if(nomes.length > 0) {
+                html += '<p><strong>Usuários sem tarefa:</strong> ' + nomes.join(', ') + '</p>';
+            }
+            
             $('#main').html(html);
             setarEventoCliqueTicket();
             setarEventoCliqueDireito(currentInstance);

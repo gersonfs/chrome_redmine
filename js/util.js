@@ -3,6 +3,22 @@ function getURLVar(key){
     return result && unescape(result[1]) || ""; 
 }
 
+function getDataAtualISO() {
+    var date = new Date();
+    var ano = date.getFullYear() + '';
+    var mes = (date.getMonth() + 1) + '';
+    var dia = date.getDate() + '';
+
+    if(mes.length === 1){
+        mes = "0" + mes;
+    }
+
+    if(dia.length === 1){
+        dia = "0" + dia;
+    }
+
+    return ano + '-' + mes + '-' + dia;
+}
 function getStrDataHoraFromDate(date){
     var ano = date.getFullYear() + '';
     var mes = (date.getMonth() + 1) + '';

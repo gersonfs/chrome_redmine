@@ -5,6 +5,8 @@ $(function (){
     
     issueForm = new RedmineIssueForm(currentInstance);
     issueForm.adicionarEventoArquivos();
+
+    $('#IssueStartDate').val(getDataAtualISO());
     
     $('#SaveIssue').click(function (){
         $(this).addClass('loading');

@@ -43,3 +43,11 @@ body {
 #RelTempoTrabalho table tr.green td{
     background-color: green;
 }
+
+#ProjectsList{
+    min-width: 600px;
+}
+
+datalist {
+    font-size: 10px;
+}
